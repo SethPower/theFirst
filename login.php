@@ -1,28 +1,26 @@
 <?php 
 
 // session_start();
-
-include_once('admin/config/connect.php');
 		
-		$sql = "SELECT * FROM customer";
-		$result = $conn -> query($sql);
+		// $sql = "SELECT * FROM customer";
+		// $result = $conn -> query($sql);
 		
-		$rows = $result->fetch_all(MYSQLI_ASSOC);
-		if(isset($_POST['sbm'])){
-			$mail = $_POST['mail'];
-			$pass = $_POST['pass'];
-			foreach ($rows as $row) {
-			if($row['customer_mail']== $mail && $row['customer_pass'] == $pass){
-				$_SESSION['mail'] = $mail;
-				$_SESSION['pass'] = $pass;
-				header("location: index.php");	
-			}
-			else{
-				$erorr = '<div class="alert alert-danger">Tài khoản không hợp lệ !</div>';
-			}
-			}
+		// $rows = $result->fetch_all(MYSQLI_ASSOC);
+		// if(isset($_POST['sbm'])){
+		// 	$mail = $_POST['mail'];
+		// 	$pass = $_POST['pass'];
+		// 	foreach ($rows as $row) {
+		// 	if($row['customer_mail']== $mail && $row['customer_pass'] == $pass){
+		// 		$_SESSION['mail'] = $mail;
+		// 		$_SESSION['pass'] = $pass;
+		// 		header("location: index.php");	
+		// 	}
+		// 	else{
+		// 		$erorr = '<div class="alert alert-danger">Tài khoản không hợp lệ !</div>';
+		// 	}
+		// 	}
 			
-		}	
+		// }	
 ?>
 
 <!DOCTYPE html>
@@ -48,63 +46,83 @@ include_once('admin/config/connect.php');
 	<?php 
 		
 
-		// if(isset($_POST['sbm'])){
+		if(isset($_POST['sbm'])){
 		
 
-		// 	$mail = $_POST['mail'];
-		// 	$pass = md5($_POST['pass']);
-		// 	$sql = "SELECT * from user where user_mail = '$mail' AND user_pass = '$pass'";
-		// 	$query = mysqli_query($conn,$sql);
-		// 	$row = mysqli_num_rows($query);
-		// 	if($row){
-		// 		$_SESSION['mail'] = $mail;
-		// 		$_SESSION['pass'] = $pass;
-		// 		header("location: index.php");
-		// 	}
-		// 	else{
-		// 		$erorr = '<div class="alert alert-danger">Tài khoản không hợp lệ !</div>';
-		// 	}
+			$mail = $_POST['mail'];
+			$pass = md5($_POST['pass']);
+			$sql = "SELECT * from customer where customer_mail = '$mail' AND customer_pass = '$pass'";
+			$query = mysqli_query($conn,$sql);
+			$row = mysqli_num_rows($query);
+	
+			if($row){
+				$_SESSION['mail'] = $mail;
+				$_SESSION['pass'] = $pass;
+				header("location: index.php");
+			}
+			else{
+				$erorr = '<div class="alert alert-danger">Tài khoản không hợp lệ !</div>';
+			}
 
 			
-		// 	if($_SESSION['mail'] = $mail && $_SESSION['pass'] = $pass){
-		// 		header("location: index.php");
-		// 	}
-		// 	else{
-		// 		$erorr = '<div class="alert alert-danger">Tài khoản không hợp lệ !</div>';
-		// 	}
-		// }
+			// if($_SESSION['mail'] = $mail && $_SESSION['pass'] = $pass){
+			// 	header("location: index.php");
+			// }
+			// else{
+			// 	$erorr = '<div class="alert alert-danger">Tài khoản không hợp lệ !</div>';
+			// }
+		}
 
 	?>
-	<div class="row">
-		<div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
-			<div class="login-panel panel panel-default">
-				<div class="panel-heading">Authentic Shoes - Customer</div>
-				<div class="panel-body">
-					<?php 
-						if(isset($erorr)){
-							echo $erorr;
-						}
-					?>
-					<form role="form" method="post">
-						<fieldset>
-							<div class="form-group">
-								<input class="form-control" placeholder="E-mail" name="mail" type="email" autofocus>
-							</div>
-							<div class="form-group">
-								<input class="form-control" placeholder="Mật khẩu" name="pass" type="password" value="">
-							</div>
-							<div class="checkbox">
-								<label>
-									<input name="remember" type="checkbox" value="Remember Me">Nhớ tài khoản
-								</label>
-							</div>
-							<button type="submit" name="sbm" class="btn btn-primary">Đăng nhập</button>
-						</fieldset>
-					</form>
+	<?php if(isset($_GET['isRegist'])) { ?>
+	<div class="alert alert-success alert-dismissible fade show" role="alert">
+		Tạo tài khoản thành công
+	</div>
+	<?php } ?>
+	<div>
+		<div>
+			<div class="main-login">
+				<div class="login-panel panel panel-default">
+					<div class="panel-heading"><h1 style="text-align: center;"><a href="index.php"><img class="img-fluid" src="images/logo.png"></a></h1></div>
+					<div class="panel-body">
+						<?php 
+							if(isset($erorr)){
+								echo $erorr;
+							}
+						?>
+						<form role="form" method="post">
+							<fieldset>
+								<div class="form-group">
+									<input class="form-control" placeholder="E-mail" name="mail" type="email" autofocus>
+								</div>
+								<div class="form-group">
+									<input class="form-control" placeholder="Mật khẩu" name="pass" type="password" value="">
+								</div>
+								<div class="checkbox">
+									<label>
+										<input name="remember" type="checkbox" value="Remember Me">Nhớ tài khoản
+									</label>
+								</div>
+								<div>
+									Bạn chưa có tài khoản? <a href="index.php?page_layout=regist">Đăng ký</a>
+								</div>
+								<button type="submit" name="sbm" class="btn btn-primary">Đăng nhập</button>
+							</fieldset>
+						</form>
+					</div>
 				</div>
 			</div>
+			
 		</div><!-- /.col-->
 	</div><!-- /.row -->	
+
+	<script>
+		<?php 
+			if(!isset($_GET['isRegist'])) {
+		?>
+			$('.alert').alert()
+		<?php } ?>
+	</script>
 </body>
 
 </html>

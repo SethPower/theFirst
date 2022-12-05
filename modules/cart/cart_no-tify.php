@@ -1,5 +1,5 @@
 
-<div id="cart" class="col-lg-4 col-md-4 col-sm-12 self-align-end">
+<div id="cart" class="col-lg-5 col-md-5 col-sm-12 self-align-end">
     <a class=" mr-2 position-relative" href="index.php?page_layout=cart" style="float:left;">
         <i class="fa-solid fa-cart-shopping"></i>
 

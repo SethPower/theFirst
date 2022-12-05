@@ -29,6 +29,8 @@
         if(isset($_GET['page_layout']) && ($_GET['page_layout'] == "login" || $_GET['page_layout'] == "logout")){
             if($_GET['page_layout'] == "logout") $_SESSION['mail'] = null;
             include_once('login.php');
+        } else if(isset($_GET['page_layout']) && $_GET['page_layout'] == "regist") {
+            include_once('regist.php');
         }
         else {
     ?>
