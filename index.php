@@ -31,6 +31,8 @@
             include_once('login.php');
         } else if(isset($_GET['page_layout']) && $_GET['page_layout'] == "regist") {
             include_once('regist.php');
+        } else if(isset($_GET['page_layout']) && $_GET['page_layout'] == "byform") {
+            include_once('byform.php');
         }
         else {
     ?>

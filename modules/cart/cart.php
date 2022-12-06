@@ -15,12 +15,6 @@
     use PHPMailer\PHPMailer\Exception;	
     
     if(isset($_SESSION["cart"])){
-        if(isset($_POST['sbm'])){
-            $qtt = array();
-            foreach($_POST['qtt'] as $prd_id => $qtt){
-                $_SESSION['cart'][$prd_id] = $qtt;
-            }
-        }
         $arr_id = array();
         foreach($_SESSION["cart"] as $prd_id => $qtt){
             $arr_id[] = $prd_id;
@@ -28,6 +22,37 @@
         $str_id = implode(", ", $arr_id);
         $sql = "SELECT * FROM product WHERE prd_id IN ($str_id)";
         $query = mysqli_query($conn,$sql);
+        if(isset($_POST['byform'])){
+            $name_order = $_POST['name'];
+            $email_order = $_POST['mail'];
+            $address_order = $_POST['add'];
+            $phone_order = $_POST['phone'];
+    
+            // $sql = "INSERT INTO `order`(`name`, `email`, `address`, `phone`) VALUES ('$name_order','$email_order','$address_order','$phone_order')";
+            // $query = mysqli_query($conn,$sql);
+            
+            $sql = "SELECT * FROM `order` WHERE id = (SELECT max(id) FROM `order` WHERE deleted_at is null) LIMIT 1";
+            
+            $resultOrder = $conn -> query($sql);
+            $dataOrder = $resultOrder->fetch_all(MYSQLI_ASSOC);
+            $idOrder = $dataOrder[0]["id"];
+
+            $qtt = array();
+
+            while($row = mysqli_fetch_array($query)){
+                var_dump($dataOrder[0]["id"]);
+                $prd_id = $row[0]["prd_id"];
+                 $sql = "INSERT INTO `order_mapping`(`order_id`, `product_id`, `number_product`) VALUES ('$idOrder','$prd_id',1)";
+                //  $query = mysqli_query($conn,$sql);
+            }
+            // var_dump($_POST['qtt']);
+            // foreach($_POST['qtt'] as $prd_id => $qtt){
+            //     var_dump($prd_id);
+            //     $_SESSION['cart'][$prd_id] = $qtt;
+            // }
+        }
+       
+       
 ?>
 <!--	Cart	-->
 <div id="my-cart">
@@ -167,21 +192,22 @@
                 <input placeholder="Địa chỉ nhà riêng hoặc cơ quan (bắt buộc)" type="text" name="add" class="form-control" required>
             </div>
         </div>
+    
+        <div class="row">
+            <div class="by-now col-lg-6 col-md-6 col-sm-12">
+                <button name="byform" type="submit">
+                    <b>Mua ngay</b>
+                    <span>Giao hàng tận nơi siêu tốc</span>
+                </button>
+            </div>
+            <div class="by-now col-lg-6 col-md-6 col-sm-12">
+                <a href="#">
+                    <b>Trả góp Online</b>
+                    <span>Vui lòng call (+84) 0326432343</span>
+                </a>
+            </div>
+        </div>
     </form>
-    <div class="row">
-        <div class="by-now col-lg-6 col-md-6 col-sm-12">
-            <a onclick="buyNow();" href="#">
-                <b>Mua ngay</b>
-                <span>Giao hàng tận nơi siêu tốc</span>
-            </a>
-        </div>
-        <div class="by-now col-lg-6 col-md-6 col-sm-12">
-            <a href="#">
-                <b>Trả góp Online</b>
-                <span>Vui lòng call (+84) 0326432343</span>
-            </a>
-        </div>
-    </div>
 </div>
 <!--	End Customer Info	-->
 

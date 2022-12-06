@@ -12,7 +12,7 @@
 		$sql = "SELECT * FROM customer WHERE customer_mail = '".$user_mail."'";
 		$result = $conn -> query($sql);
 		$rows = $result->fetch_all(MYSQLI_ASSOC);
-	var_dump(count($rows));
+	
 		if(count($rows) == 0) {
 			if($user_pass===$user_re_pass){
 				$sql = "INSERT INTO customer (customer_full, customer_mail, customer_pass) VALUES ('$user_full','$user_mail','$user_pass')";
@@ -31,6 +31,11 @@
         
     } else $isExit = false;
 ?>
+<style>
+	body {
+		overflow: hidden;
+	}
+</style>
 		
 	<div class="">			
 		

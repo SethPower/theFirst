@@ -26,12 +26,12 @@
         </span>
     </a>
         <ul id="ul-login" style="float: left;">
-            <?php if(isset($_SESSION['mail'])) { ?>
+            <?php if(isset($_SESSION['user_name'])) { ?>
                 <li style="float: left;">
                     <a href="index.php?page_layout=login">
                         <svg style="height: 30px; width: 30px;" class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg>
                         <?php 
-                            echo $_SESSION['mail'];
+                            echo $_SESSION['user_name'];
                         ?>
                     </a>
                 </li>

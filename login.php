@@ -52,12 +52,13 @@
 			$mail = $_POST['mail'];
 			$pass = md5($_POST['pass']);
 			$sql = "SELECT * from customer where customer_mail = '$mail' AND customer_pass = '$pass'";
-			$query = mysqli_query($conn,$sql);
-			$row = mysqli_num_rows($query);
+			$result = $conn -> query($sql);
+            $row = $result->fetch_all(MYSQLI_ASSOC);
 	
-			if($row){
-				$_SESSION['mail'] = $mail;
+			if(count($row) > 0){
+				$_SESSION['user_name'] = $row[0]['customer_full'];
 				$_SESSION['pass'] = $pass;
+				var_dump($row[0]);
 				header("location: index.php");
 			}
 			else{
