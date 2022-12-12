@@ -9,7 +9,7 @@
     }else{
         $page = 1;
     }
-    $row_per_page = 3;
+    $row_per_page = 10;
     $per_row = $page * $row_per_page - $row_per_page;
     echo $total_row = mysqli_num_rows(mysqli_query($conn, 'SELECT * FROM user'));
     $total_page = ceil($total_row/$row_per_page);
@@ -96,11 +96,11 @@
                                                 echo "primary";
                                             }?>"><?php 
                                             if($row['user_level'] == 1){
-                                                echo "Admin";
+                                                echo "Quản lý hệ thống";
                                             }elseif($row['user_level']==2){
-                                                echo "Manager";
+                                                echo "Quản trị viên";
                                             }else{
-                                                echo "Member";
+                                                echo "Kế toán";
                                             } ?>
                                             </span>
                                         </td>

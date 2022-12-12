@@ -1,6 +1,6 @@
 <div id="banner">
     <div class="banner-item">
-        <a href="#"><img class="img-fluid" src="images/SALE-70_-0322-590x220.jpg"></a>
+        <a href="index.php?page_layout=sale"><img class="img-fluid" src="images/SALE-70_-0322-590x220.jpg"></a>
     </div>
     
     <div class="banner-item">

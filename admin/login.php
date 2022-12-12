@@ -6,22 +6,23 @@ if(!defined('SECURITY')){
 
 include_once('config/connect.php');
 		
-		$sql = "SELECT * FROM user";
-		$result = $conn -> query($sql);
-
-		$rows = $result->fetch_all(MYSQLI_ASSOC);
+		
 		if(isset($_POST['sbm'])){
 			$mail = $_POST['mail'];
-			$pass = $_POST['pass'];
-			foreach ($rows as $row) {
-			if($row['user_mail']== $mail && $row['user_pass'] == $pass){
-				$_SESSION['mail'] = $mail;
-				$_SESSION['pass'] = $pass;
+			$pass = md5($_POST['pass']);
+			$sql = "SELECT * from user where user_mail = '$mail' AND user_pass = '$pass'";
+			$result = $conn -> query($sql);
+			$row = $result->fetch_all(MYSQLI_ASSOC);
+			
+			
+			if(isset($row[0])){
+				$_SESSION['mail'] = $row[0]['user_mail'];
+				$_SESSION['pass'] = $row[0]['user_pass'];
+				$_SESSION['role'] = $row[0]['user_level'];
 				header("location: index.php");
 			}
 			else{
 				$erorr = '<div class="alert alert-danger">Tài khoản không hợp lệ !</div>';
-			}
 			}
 			
 		}	

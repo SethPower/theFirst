@@ -1,4 +1,23 @@
 <?php 
+
+    if(isset($_POST['order_submit'])){
+        $idAct = $_POST['idAct'];
+        if($_POST['order_submit'] == "cancel") {
+            $reason = $_POST['reason'];
+            $sql = "UPDATE `order` SET `status`='3',`reason`='$reason' WHERE `id` = '$idAct'";
+            var_dump($sql);
+            mysqli_query($conn,$sql);
+        } else if($_POST['order_submit'] == "change") {
+            $sql = "UPDATE `order` SET `status`='2' WHERE `id` = '$idAct'";
+            var_dump($sql);
+            mysqli_query($conn,$sql);
+        } else if($_POST['order_submit'] == "success") {
+            $sql = "UPDATE `order` SET `status`='0' WHERE `id` = '$idAct'";
+            var_dump($sql);
+            mysqli_query($conn,$sql);
+        }
+        
+    }
     $user = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM `order`"));
     // if(!defined('SECURITY')){
     //     die('Bạn không thể truy cập vào trang này!');
@@ -36,12 +55,14 @@
         $page_next = $total_page;
     }
     $list_page .= '<li class="page-item"><a class="page-link" href="index.php?page_layout=order&page='.$page_next.'">&raquo;</a></li>';
+    
 ?>
 <style>
     .table td {
         vertical-align: middle !important;
     }
 </style>	
+<form id="order_form" role="form" method="post">
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">			
     <div class="row">
         <ol class="breadcrumb">
@@ -78,6 +99,7 @@
                         </thead>
                         <tbody>
                             <?php 
+                             
                                 $sql = "SELECT * FROM `order` ORDER BY `id` DESC LIMIT ".$per_row.','.$row_per_page;
                                 $query = mysqli_query($conn, $sql);
                                 while($row = mysqli_fetch_array($query)){
@@ -108,11 +130,37 @@
                                         
                                         <?php if($idx == 0) { ?>
                                         <td rowspan=<?php echo $rowspan; ?> style=""><?php echo $total_price_all; ?></td>
-                                        <td rowspan=<?php echo $rowspan; ?> style=""><?php echo $row['status'] == 1 ? "Chưa hoàn thành" : ""; ?></td>
+                                        <td rowspan=<?php echo $rowspan; ?> style="">
+                                            <?php 
+                                                switch($row['status']) {
+                                                    case 1:
+                                                        echo "Đơn mới";
+                                                        break;
+                                                    case 2:
+                                                        echo "Đang giao hàng";
+                                                        break;
+                                                    case 3:
+                                                        echo "Đơn hủy";
+                                                        break;
+                                                    case 0:
+                                                        echo "Hoàn thành";
+                                                        break;
+                                                }
+                                            ?>
+                                    
+                                        </td>
                                         
                                         <td rowspan=<?php echo $rowspan; ?> class="form-group">
-                                            <a href="index.php?page_layout=edit_user&&user_id=<?php echo $row['user_id']; ?>" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i></a>
-                                            <a href="del_user.php?user_id=<?php echo $row['user_id']; ?>" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i></a>
+                                        <?php if($row['status'] != 0) { ?>
+                                            <?php if($row['status'] == 1 && ($role == '1' || $role == '2')) { ?>
+                                                <a title="Giao hàng" onclick="onSubmit('change',<?php echo $row['id']; ?>)" class="btn btn-primary"><i class="glyphicon glyphicon-refresh"></i></a>
+                                            <?php } ?>
+                                            <?php if($row['status'] == 2 && ($role == '1' || $role == '3')) { ?>
+                                                <a title="Hoàn thành" onclick="onSubmit('success',<?php echo $row['id']; ?>)" class="btn btn-primary"><i class="glyphicon glyphicon-ok"></i></a>
+                                            <?php } ?>
+                                                <a onclick="openModalReason(<?php echo $row['id']; ?>,<?php echo $row['status']; ?>)" title="Hủy đơn" href="del_user.php?user_id=<?php echo $row['user_id']; ?>" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i></a>
+                                                <input type="hidden" name="reason_<?php echo $row['id']; ?>" id="reason_<?php echo $row['id']; ?>" value="<?php echo $row['reason']; ?>" />
+                                        <?php } ?>
                                         </td>
                                         <?php } ?>
                                     </tr>
@@ -136,3 +184,48 @@
         </div>
     </div><!--/.row-->	
 </div>	<!--/.main-->
+<input type="hidden" name="idAct" id="idAct" />
+<input type="hidden" name="order_submit" id="order_submit" />
+<!-- Modal -->
+<div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="cancelModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Lý do</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+            <textarea required name="reason" id="reason" class="form-control" rows="10"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+        <button id="btn_cancel" type="button" onclick="onSubmit('cancel')" class="btn btn-primary">Hủy đơn</button>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
+<script>
+
+    function openModalReason(id,status) {
+        if(status == 3) {
+            $('#reason').val($('#reason_' + id).val());
+            $('#reason').attr('readonly', true);
+            $('#btn_cancel').hide();
+        } else {
+            $('#reason').val('');
+            $('#reason').attr('readonly', false);
+            $('#btn_cancel').show();
+        }
+        $('#idAct').val(id);
+        $('#cancelModal').modal()
+    }
+
+    function onSubmit(act,id) {
+        if(id) $('#idAct').val(id);
+        $('#order_submit').val(act);
+        document.getElementById('order_form').submit()
+    }
+</script>

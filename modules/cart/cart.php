@@ -75,7 +75,7 @@
         ?>
             <div class="cart-item row">
                 <div class="cart-thumb col-lg-7 col-md-7 col-sm-12">
-                    <img src="admin/images/<?php echo $row['prd_image']; ?>">
+                    <img src="admin/img/products/<?php echo $row['prd_image']; ?>">
                     <h4><?php echo $row['prd_name']; ?></h4>
                 </div>
                 <div class="cart-quantity col-lg-2 col-md-2 col-sm-12">

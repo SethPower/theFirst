@@ -2,22 +2,33 @@
 	// if(!defined('SECURITY')){
 	// 	die('Bạn không có quyền truy cập vào file này!');
 	// }
+    $isExit = false;
     if(isset($_POST['sbm'])){
         $user_full = $_POST['user_full'];
         $user_mail = $_POST['user_mail'];
         $user_pass = md5($_POST['user_pass']);
         $user_re_pass = md5($_POST['user_re_pass']);
         $user_level = $_POST['user_level'];
-        if($user_pass===$user_re_pass){
-            $sql = "INSERT INTO user (user_full, user_mail, user_pass, user_level) VALUES ('$user_full','$user_mail','$user_pass', $user_level)";
-            $query = mysqli_query($conn,$sql);
-            header("location: index.php?page_layout=user");
-        }else{
-			echo '<script language="javascript">';
-			echo 'alert("Mật khẩu không khớp! Hãy nhập lại")';
-			echo '</script>';
-		}
-    }
+
+        $sql = "SELECT * FROM user WHERE user_mail = '".$user_mail."'";
+		$result = $conn -> query($sql);
+		$rows = $result->fetch_all(MYSQLI_ASSOC);
+        if(count($rows) == 0) {
+            if($user_pass===$user_re_pass){
+                $sql = "INSERT INTO user (user_full, user_mail, user_pass, user_level) VALUES ('$user_full','$user_mail','$user_pass', $user_level)";
+                $query = mysqli_query($conn,$sql);
+                header("location: index.php?page_layout=user");
+            }else{
+                echo '<script language="javascript">';
+                echo 'alert("Mật khẩu không khớp! Hãy nhập lại")';
+                echo '</script>';
+            }
+            $isExit = false;
+        } else {
+            $isExit = true;
+        }
+        
+    } else $isExit = false;
 ?>
 		
 	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">			
@@ -39,7 +50,9 @@
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <div class="col-md-8">
-                            	<div class="alert alert-danger">Email đã tồn tại !</div>
+                                <?php if($isExit) { ?>
+                            	    <div class="alert alert-danger">Email đã tồn tại !</div>
+                                <?php } ?>
                                 <form role="form" method="post">
                                 <div class="form-group">
                                     <label>Họ & Tên</label>
@@ -60,9 +73,9 @@
                                 <div class="form-group">
                                     <label>Quyền</label>
                                     <select name="user_level" class="form-control">
-                                        <option value=1>Admin</option>
-                                        <option value=2>Manager</option>
-                                        <option value=3>Member</option>
+                                        <option value=1>Quản lý hệ thống</option>
+                                        <option value=2>Quản trị viên</option>
+                                        <option value=3>Kế toán</option>
                                     </select>
                                 </div>
                                 <button name="sbm" type="submit" class="btn btn-success">Thêm mới</button>

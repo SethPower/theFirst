@@ -13,7 +13,7 @@
 <div id="product">
     <div id="product-head" class="row">
         <div id="product-img" class="col-lg-6 col-md-6 col-sm-12">
-            <img src="admin/images/<?php echo $row['prd_image']; ?>">
+            <img src="admin/img/products/<?php echo $row['prd_image']; ?>">
         </div>
         <div id="product-details" class="col-lg-6 col-md-6 col-sm-12">
             <h1><?php echo $row['prd_name']; ?></h1>
