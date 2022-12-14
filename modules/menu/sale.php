@@ -1,10 +1,8 @@
 <?php 
-    if(isset($_GET['cat_id'])){
-        $cat_id = $_GET['cat_id'];
-        $sql = "SELECT * FROM category WHERE cat_id = $cat_id ";
-        $query = mysqli_query($conn,$sql);
-        $row = mysqli_fetch_array($query);
-    }
+    $sql = "SELECT * FROM sale INNER JOIN product on sale.product_id = product.prd_id WHERE `start_date`<= now() and  `end_date` >= now()";
+    $query = mysqli_query($conn,$sql);
+    $row = mysqli_fetch_array($query);
+
     if(isset($_GET['page'])){
         $page = $_GET['page'];
     }else{
@@ -23,8 +21,7 @@
     if($page <= 1){
         $prev = 1;
     }
-    $list_page .= '<li class="page-item"><a class="page-link" href="index.php?page_layout=category&&
-    cat_id='.$cat_id.'&&page='.$prev.'">&laquo;</a></li>';
+    $list_page .= '<li class="page-item"><a class="page-link" href="index.php?page_layout=sale&&page='.$prev.'">&laquo;</a></li>';
 
     for($i=1;$i<=$total_page;$i++){
         if($i == $page){
@@ -32,32 +29,32 @@
         }else{
             $active = '';
         }
-        $list_page .= '<li class="page-item '.$active.'"><a class="page-link" href="index.php?page_layout=category&&
-        cat_id='.$cat_id.'&&page='.$i.'">'.$i.'</a></li>';
+        $list_page .= '<li class="page-item '.$active.'"><a class="page-link" href="index.php?page_layout=sale&&page='.$i.'">'.$i.'</a></li>';
     }
 
     $next = $page + 1;
     if($next >= $total_page){
         $next = $total_page;
     }
-    $list_page .= '<li class="page-item"><a class="page-link" href="index.php?page_layout=category&&
-    cat_id='.$cat_id.'&&page='.$next.'">&raquo;</a></li>';
+    $list_page .= '<li class="page-item"><a class="page-link" href="index.php?page_layout=sale&&page='.$next.'">&raquo;</a></li>';
 
 ?>
 <!--	List Product	-->
 <div class="products">
-    <h3><?php echo $row['cat_name']; ?> (hiện có <?php echo $count = mysqli_num_rows(mysqli_query($conn,"SELECT * FROM product WHERE cat_id = $cat_id"));?> sản phẩm)</h3>
+    <h3> Sản phẩm khuyến mãi (hiện có <?php echo $count = mysqli_num_rows(mysqli_query($conn,"SELECT * FROM sale INNER JOIN product on sale.product_id = product.prd_id WHERE `start_date`<= now() and  `end_date` >= now()"));?> sản phẩm)</h3>
     <div class="product-list row">
         <?php
-            $sql_prd = "SELECT * FROM product WHERE cat_id = $cat_id ORDER BY prd_id DESC LIMIT 9";
+            $sql_prd = "SELECT * FROM sale INNER JOIN product on sale.product_id = product.prd_id WHERE `start_date`<= now() and  `end_date` >= now() ORDER BY product.prd_id DESC LIMIT 9";
             $query_prd = mysqli_query($conn,$sql_prd);
             while($row_prd = mysqli_fetch_array($query_prd)){
         ?>
             <div class="col-lg-4 col-md-6 col-sm-12 mx-product">
                 <div class="product-item card text-center">
+                <span class="label label-danger"><?php echo (((1 -round((int)$row_prd['sale_price']/(int)$row_prd['prd_price'],2)))*100).'%'; ?></span>
                 <a href="index.php?page_layout=product&&prd_id=<?php echo $row_prd['prd_id']; ?>"><img src="admin/img/products/<?php echo $row_prd['prd_image']; ?>"></a>
                 <h4><a href="index.php?page_layout=product&&prd_id=<?php echo $row_prd['prd_id']; ?>"><?php echo $row_prd['prd_name']; ?></a></h4>
-                <p>Giá Bán: <span><?php echo number_format($row_prd['prd_price']); ?>₫</span></p>
+                <p class="decoration">Giá Bán: <span><?php echo number_format($row_prd['prd_price']); ?>₫</span></p>
+                <p>Giá khuyến mãi: <span><?php echo number_format($row_prd['sale_price']); ?>₫</span></p>
             </div>
         </div>
         <?php        

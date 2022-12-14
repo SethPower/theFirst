@@ -22,6 +22,13 @@
 
 <!-- CK Editor -->
 <script src='ckeditor/ckeditor.js' ></script>
+<script src="js/jquery-1.11.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>	
+<script src="js/bootstrap-table.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js"></script>
+<script type="text/javascript" src="./js/bootstrap-datetimepicker.min.js"></script>
+<!-- <script type="text/javascript" src="./js/demo.js"></script> -->
 
 <!--[if lt IE 9]>
 <script src="js/html5shiv.js"></script>
@@ -110,9 +117,7 @@
 	?>
 
 
-	<script src="js/jquery-1.11.1.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>	
-    <script src="js/bootstrap-table.js"></script>
+	
 	
 </body>
 
