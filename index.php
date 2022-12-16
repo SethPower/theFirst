@@ -83,6 +83,7 @@
                                 case "sale": include_once('modules/menu/sale.php'); break;
                                 case "success": include_once('modules/cart/success.php'); break;
                                 case "search": include_once('modules/search/search.php'); break;
+                                case "new": include_once('modules/product/latest.php'); break;
                             }
                         }else{
                             include_once('modules/product/featured.php');

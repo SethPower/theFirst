@@ -68,5 +68,70 @@
 					</div>
 				</div>
 			</div>
+
+			<?php
+				$start_date = date("Y-m-d",time() - 60*86400).' 00:00:00';  
+				$end_date = date("Y-m-d",time()).' 23:59:59'; 
+			
+				$sql = "SELECT * from `order` where created_at >= '$start_date' and created_at <= '$end_date'";
+				
+				$query = mysqli_query($conn,$sql);
+				$moneyDay = 0;
+				$moneyDayOld = 0;
+				$moneyW = 0;
+				$moneyWOld = 0;
+				$moneyM = 0;
+				$moneyMOld = 0;
+				while($row = mysqli_fetch_array($query)){
+					if(strtotime($row['created_at']) >= strtotime(date("Y-m-d",time()).' 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y-m-d",time()).' 23:59:59'))
+						$moneyDay += (int) $row['total_price'];
+					if(strtotime($row['created_at']) >= strtotime(date("Y-m-d",time()-86400).' 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y-m-d",time()-86400).' 23:59:59'))
+						$moneyDayOld += (int) $row['total_price'];
+					
+					if(strtotime($row['created_at']) >= strtotime(date("Y-m-d",time() - 7*86400).' 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y-m-d",time()).' 23:59:59'))
+						$moneyW += (int) $row['total_price'];
+					if(strtotime($row['created_at']) >= strtotime(date("Y-m-d",time()-14*86400).' 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y-m-d",time()-7*86400).' 23:59:59'))
+						$moneyWOld += (int) $row['total_price'];
+
+					if(strtotime($row['created_at']) >= strtotime(date("Y-m-d",time() - 30*86400).' 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y-m-d",time()).' 23:59:59'))
+						$moneyM += (int) $row['total_price'];
+					if(strtotime($row['created_at']) >= strtotime(date("Y-m-d",time()-60*86400).' 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y-m-d",time()-30*86400).' 23:59:59'))
+						$moneyMOld += (int) $row['total_price'];
+				}
+				// var_dump(round($moneyW/$moneyWOld,2));
+			?>
+			<div class="col-xs-12" id="info-box">
+				<div class="info-box-content">
+					<div class="info-box-item">
+						<div class="title color-blue">Doanh thu theo ngày</div>
+						<div class="money"><?php echo number_format($moneyDay) ?> VND</div>
+						<?php if(round($moneyDay/$moneyDayOld,2) >= 1) { ?>
+							<div class="percen color-green"><?php echo $moneyDayOld != 0 ? (round($moneyDay/$moneyDayOld,2))*100 : 100; ?>% <i class="glyphicon glyphicon-arrow-up"></i></div>
+						<?php } else { ?>
+							<div class="percen color-red"><?php echo $moneyDayOld != 0 ? (1 - round($moneyDay/$moneyDayOld,2))*100 : 100; ?>% <i class="glyphicon glyphicon-arrow-down"></i></div>
+						<?php } ?>
+					</div>
+
+					<div class="info-box-item">
+						<div class="title color-red">Doanh thu theo tuần</div>
+						<div class="money"><?php echo number_format($moneyW) ?> VND</div>
+						<?php if($moneyWOld == 0 || round($moneyW/$moneyWOld,2) >= 1) { ?>
+							<div class="percen color-green"><?php echo $moneyWOld != 0 ? (round($moneyW/$moneyWOld,2) - 1)*100 : 100; ?>% <i class="glyphicon glyphicon-arrow-up"></i></div>
+						<?php } else { ?>
+							<div class="percen color-red"><?php echo $moneyWOld != 0 ? (1 - round($moneyW/$moneyWOld,2))*100 : 100; ?>% <i class="glyphicon glyphicon-arrow-down"></i></div>
+						<?php } ?>
+					</div>
+
+					<div class="info-box-item">
+						<div class="title color-yellow">Doanh thu theo tháng</div>
+						<div class="money"><?php echo number_format($moneyM) ?> VND</div>
+						<?php if($moneyMOld == 0 || round($moneyM/$moneyMOld,2) >= 1) { ?>
+							<div class="percen color-green"><?php echo $moneyMOld != 0 ? (round($moneyM/$moneyMOld,2) - 1)*100 : 100; ?>% <i class="glyphicon glyphicon-arrow-up"></i></div>
+						<?php } else { ?>
+							<div class="percen color-red"><?php echo $moneyMOld != 0 ? (1 - round($moneyM/$moneyMOld,2))*100 : 100; ?>% <i class="glyphicon glyphicon-arrow-down"></i></div>
+						<?php } ?>
+					</div>
+				<div>
+			</div>
 		</div><!--/.row-->
 	</div>	<!--/.main-->

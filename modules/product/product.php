@@ -3,7 +3,7 @@
 <?php 
     if(isset($_GET['prd_id'])){
         $prd_id = $_GET['prd_id'];
-        $sql = "SELECT * FROM product WHERE prd_id = $prd_id";
+        $sql = "SELECT * FROM product LEFT JOIN sale on sale.product_id = product.prd_id WHERE product.prd_id = $prd_id";
         $query = mysqli_query($conn,$sql);
         $row = mysqli_fetch_array($query);
     }
@@ -20,10 +20,15 @@
             <ul>
                 <li><span>Bảo hành:</span><?php echo $row['prd_warranty']; ?></li>
                 <li><span>Đi kèm:</span><?php echo $row['prd_accessories']; ?></li>
-                <li><span>Tình trạng:</span><?php echo $row['prd_new']; ?></li>
-                <li><span>Khuyến Mại:</span><?php echo $row['prd_promotion']; ?></li>
+                <!-- <li><span>Tình trạng:</span><?php echo $row['prd_new']; ?></li> -->
                 <li id="price">Giá Bán (chưa bao gồm VAT)</li>
-                <li id="price-number"><?php echo number_format($row['prd_price']); ?>₫</li>
+                <?php if(isset($row['sale_price'])) { ?>
+                <li id="price-number" class="decoration"><?php echo number_format($row['prd_price']); ?>₫</li>
+                <li id="price">Khuyến Mại:</li>
+                <li id="price-number"><?php echo number_format($row['sale_price']); ?>₫</li>
+                <?php } else { ?>
+                    <li id="price-number"><?php echo number_format($row['prd_price']); ?>₫</li>
+                <?php } ?>
                 <li class="<?php if($row['prd_status']==1){echo "text-success";}else{echo "text-danger";}?>"><?php if($row['prd_status']==1){echo "Còn hàng";}else{echo "Hết hàng";}?></li>
             </ul>
             <div id="add-cart">
@@ -35,7 +40,7 @@
         <div class="col-lg-12 col-md-12 col-sm-12">
             <h3>Đánh giá về <?php echo $row['prd_name']; ?></h3>
             
-            <p>
+            <!-- <p>
                 Màn hình OLED có hỗ trợ HDR là một sự nâng cấp mới của Apple thay vì màn hình LCD với IPS được tìm thấy trên iPhone 8 và iPhone 8 Plus đem đến tỉ lệ tương phản cao hơn đáng kể là 1.000.000: 1, so với 1.300: 1 ( iPhone 8 Plus ) và 1.400: 1 ( iPhone 8 ).
             </p>
             <p>
@@ -52,7 +57,7 @@
             </p>
             <p>
                 Portrait Mode là tính năng chụp ảnh xóa phông trước đây chỉ có với camera sau của iPhone 7 Plus, hiện được tích hợp trên cả iPhone 8 Plus và iPhone X. Tuy nhiên, nhờ sức mạnh của cảm biến trên mặt trước của iPhone X, Camera TrueDepth cũng có thể chụp với Potrait mode.
-            </p>
+            </p> -->
         </div>
     </div>
 
@@ -73,19 +78,25 @@
         <div class="col-lg-12 col-md-12 col-sm-12">
             <h3>Bình luận sản phẩm</h3>
             <form method="post">
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label>Tên:</label>
                     <input name="comm_name" required type="text" class="form-control">
                 </div>
                 <div class="form-group">
                     <label>Email:</label>
                     <input name="comm_mail" required type="email" class="form-control" id="pwd">
-                </div>
+                </div> -->
+                <?php if(isset($_SESSION['user_name'])) { ?>
+                <input name="comm_name" required type="hidden" value="<?php echo $_SESSION['user_name'];?>" class="form-control">
+                <input name="comm_mail" required type="hidden" class="form-control" id="pwd">
                 <div class="form-group">
                     <label>Nội dung:</label>
                     <textarea name="comm_details" required rows="8" class="form-control"></textarea>
                 </div>
                 <button type="submit" name="sbm" class="btn btn-primary">Gửi</button>
+                <?php } else { ?>
+                    <label>Đăng nhập để bình luận! <a href="index.php?page_layout=login">Đăng nhập</a></label>
+                <?php } ?>
             </form>
         </div>
     </div>

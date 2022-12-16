@@ -109,13 +109,13 @@
                                    
                                     $rowspan = count($rowMap);
                                     //  var_dump($rowspan);
-                                    $total_price_all = 0;
+                                    // $total_price_all = 0;
                                     $idx = 0;
+                                    //     foreach($rowMap as $itemMap) {
+                                    //         $total_price_all += $itemMap['number_product']*$itemMap['prd_price'];
+                                    //     }
                                         foreach($rowMap as $itemMap) {
-                                            $total_price_all += $itemMap['number_product']*$itemMap['prd_price'];
-                                        }
-                                        foreach($rowMap as $itemMap) {
-                            ?>
+                                    ?>
                                     <tr>
                                         <?php if($idx == 0) { ?>
                                         <td rowspan="<?php echo $rowspan; ?>" style=""><?php echo $row['id']; ?></td>
@@ -129,7 +129,7 @@
                                             <td style=""><?php echo $itemMap['prd_price']; ?></td>
                                         
                                         <?php if($idx == 0) { ?>
-                                        <td rowspan=<?php echo $rowspan; ?> style=""><?php echo $total_price_all; ?></td>
+                                        <td rowspan=<?php echo $rowspan; ?> style=""><?php echo $row['total_price']; ?></td>
                                         <td rowspan=<?php echo $rowspan; ?> style="">
                                             <?php 
                                                 switch($row['status']) {

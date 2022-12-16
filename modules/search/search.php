@@ -5,7 +5,7 @@ $keyword = $_POST['keyword']; // aa bb cc
 $arr_key = explode(" ", $keyword); // => [aa] [bb] [cc]
 $new_key = "%".implode("%", $arr_key)."%"; // => %aa%bb%cc%
 
-$sql = "SELECT * FROM product WHERE prd_name LIKE '$new_key' LIMIT 9";
+$sql = "SELECT * FROM product LEFT JOIN sale on sale.product_id = product.prd_id WHERE prd_name LIKE '$new_key' LIMIT 9";
 $query = mysqli_query($conn,$sql);
 
 // PHÂN TRANG
@@ -54,7 +54,13 @@ $list_page .= '<li class="page-item"><a class="page-link" href="index.php?page_l
                 <div class="product-item card text-center">
                     <a href="index.php?page_layout=product&&prd_id=<?php echo $row['prd_id']; ?>"><img src="admin/img/products/<?php echo $row['prd_image']; ?>"></a>
                     <h4><a href="index.php?page_layout=product&&prd_id=<?php echo $row['prd_id']; ?>"><?php echo $row['prd_name']; ?></a></h4>
-                    <p>Giá Bán: <span><?php echo number_format($row['prd_price']); ?>đ</span></p>
+                    <?php if(isset($row['sale_price'])) { ?>
+                    <p class="decoration">Giá Bán: <span><?php echo $row['prd_price']; ?>đ</span></p>
+                    <p>Giá khuyến mãi: <span><?php echo number_format($row['sale_price']); ?>₫</span></p>
+                    <span class="label label-danger"><?php echo (((1 -round((int)$row['sale_price']/(int)$row['prd_price'],2)))*100).'%'; ?></span>
+                    <?php } else { ?>
+                        <p>Giá Bán: <span><?php echo $row['prd_price']; ?>đ</span></p>
+                    <?php } ?>
                 </div>
             </div>
         <?php        

@@ -8,7 +8,7 @@
     }else{
         $page = 1;
     }
-    $row_per_page = 3; // 1 trang hiển thị ? bản ghi
+    $row_per_page = 9; // 1 trang hiển thị ? bản ghi
     $per_row = $page * $row_per_page - $row_per_page; // phần tử đầu trang
     $total_row = mysqli_num_rows(mysqli_query($conn,$sql)); // số bản ghi
     $total_page = ceil($total_row / $row_per_page); // số trang
