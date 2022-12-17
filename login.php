@@ -51,6 +51,7 @@
 
 			$mail = $_POST['mail'];
 			$pass = md5($_POST['pass']);
+			var_dump($pass);
 			$sql = "SELECT * from customer where customer_mail = '$mail' AND customer_pass = '$pass'";
 			$result = $conn -> query($sql);
             $row = $result->fetch_all(MYSQLI_ASSOC);
