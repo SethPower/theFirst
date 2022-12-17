@@ -68,5 +68,237 @@
 					</div>
 				</div>
 			</div>
+
+			<?php
+				$start_date = date("Y").'-01-01 00:00:00';  
+				$end_date = date("Y-m-d",time()).' 23:59:59'; 
+			
+				$sql = "SELECT * from `order` where created_at >= '$start_date' and created_at <= '$end_date' and status != 3";
+				
+				$query = mysqli_query($conn,$sql);
+				$moneyDay = 0;
+				$moneyDayOld = 0;
+				$moneyW = 0;
+				$moneyWOld = 0;
+				$moneyM = 0;
+				$moneyMOld = 0;
+				$listMonth = [0,0,0,0,0,0,0,0,0,0,0,0];
+				while($row = mysqli_fetch_array($query)){
+					if(strtotime($row['created_at']) >= strtotime(date("Y-m-d",time()).' 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y-m-d",time()).' 23:59:59'))
+						$moneyDay += (int) $row['total_price'];
+					if(strtotime($row['created_at']) >= strtotime(date("Y-m-d",time()-86400).' 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y-m-d",time()-86400).' 23:59:59'))
+						$moneyDayOld += (int) $row['total_price'];
+					
+					if(strtotime($row['created_at']) >= strtotime(date("Y-m-d",time() - 7*86400).' 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y-m-d",time()).' 23:59:59'))
+						$moneyW += (int) $row['total_price'];
+					if(strtotime($row['created_at']) >= strtotime(date("Y-m-d",time()-14*86400).' 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y-m-d",time()-7*86400).' 23:59:59'))
+						$moneyWOld += (int) $row['total_price'];
+
+					if(strtotime($row['created_at']) >= strtotime(date("Y-m-d",time() - 30*86400).' 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y-m-d",time()).' 23:59:59'))
+						$moneyM += (int) $row['total_price'];
+					if(strtotime($row['created_at']) >= strtotime(date("Y-m-d",time()-60*86400).' 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y-m-d",time()-30*86400).' 23:59:59'))
+						$moneyMOld += (int) $row['total_price'];
+
+					//Tháng 1
+					if(strtotime($row['created_at']) >= strtotime(date("Y").'-01-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-01-31 23:59:59'))
+						$listMonth[0] += (int) $row['total_price'];
+					//Tháng 2
+					if(strtotime($row['created_at']) >= strtotime(date("Y").'-02-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-02-31 23:59:59'))
+						$listMonth[1] += (int) $row['total_price'];	
+					//Tháng 3
+					if(strtotime($row['created_at']) >= strtotime(date("Y").'-03-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-03-31 23:59:59'))
+						$listMonth[2] += (int) $row['total_price'];	
+					//Tháng 4
+					if(strtotime($row['created_at']) >= strtotime(date("Y").'-04-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-04-31 23:59:59'))
+						$listMonth[3] += (int) $row['total_price'];	
+					//Tháng 5
+					if(strtotime($row['created_at']) >= strtotime(date("Y").'-05-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-05-31 23:59:59'))
+						$listMonth[4] += (int) $row['total_price'];	
+					//Tháng 6
+					if(strtotime($row['created_at']) >= strtotime(date("Y").'-06-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-06-31 23:59:59'))
+						$listMonth[5] += (int) $row['total_price'];	
+					//Tháng 7
+					if(strtotime($row['created_at']) >= strtotime(date("Y").'-07-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-07-31 23:59:59'))
+						$listMonth[6] += (int) $row['total_price'];	
+					//Tháng 8
+					if(strtotime($row['created_at']) >= strtotime(date("Y").'-08-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-08-31 23:59:59'))
+						$listMonth[7] += (int) $row['total_price'];	
+					//Tháng 9
+					if(strtotime($row['created_at']) >= strtotime(date("Y").'-09-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-09-31 23:59:59'))
+						$listMonth[8] += (int) $row['total_price'];	
+					//Tháng 10
+					if(strtotime($row['created_at']) >= strtotime(date("Y").'-10-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-10-31 23:59:59'))
+						$listMonth[9] += (int) $row['total_price'];	
+					//Tháng 11
+					if(strtotime($row['created_at']) >= strtotime(date("Y").'-11-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-11-31 23:59:59'))
+						$listMonth[10] += (int) $row['total_price'];
+					//Tháng 12
+					if(strtotime($row['created_at']) >= strtotime(date("Y").'-12-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-12-31 23:59:59'))
+						$listMonth[11] += (int) $row['total_price'];	
+
+				}
+			?>
+			<div class="col-xs-12" id="info-box">
+				<div class="info-box-content">
+					<div class="info-box-item">
+						<div class="title color-blue">Doanh thu theo ngày</div>
+						<div class="money"><?php echo number_format($moneyDay) ?> VND</div>
+						<?php if($moneyDayOld == 0 || round($moneyDay/$moneyDayOld,2) >= 1) { ?>
+							<div class="percen color-green"><?php echo $moneyDayOld != 0 ? (round($moneyDay/$moneyDayOld,2))*100 : 100; ?>% <i class="glyphicon glyphicon-arrow-up"></i></div>
+						<?php } else { ?>
+							<div class="percen color-red"><?php echo $moneyDayOld != 0 ? (1 - round($moneyDay/$moneyDayOld,2))*100 : 100; ?>% <i class="glyphicon glyphicon-arrow-down"></i></div>
+						<?php } ?>
+					</div>
+
+					<div class="info-box-item">
+						<div class="title color-red">Doanh thu theo tuần</div>
+						<div class="money"><?php echo number_format($moneyW) ?> VND</div>
+						<?php if($moneyWOld == 0 || round($moneyW/$moneyWOld,2) >= 1) { ?>
+							<div class="percen color-green"><?php echo $moneyWOld != 0 ? (round($moneyW/$moneyWOld,2) - 1)*100 : 100; ?>% <i class="glyphicon glyphicon-arrow-up"></i></div>
+						<?php } else { ?>
+							<div class="percen color-red"><?php echo $moneyWOld != 0 ? (1 - round($moneyW/$moneyWOld,2))*100 : 100; ?>% <i class="glyphicon glyphicon-arrow-down"></i></div>
+						<?php } ?>
+					</div>
+
+					<div class="info-box-item">
+						<div class="title color-yellow">Doanh thu theo tháng</div>
+						<div class="money"><?php echo number_format($moneyM) ?> VND</div>
+						<?php if($moneyMOld == 0 || round($moneyM/$moneyMOld,2) >= 1) { ?>
+							<div class="percen color-green"><?php echo $moneyMOld != 0 ? (round($moneyM/$moneyMOld,2) - 1)*100 : 100; ?>% <i class="glyphicon glyphicon-arrow-up"></i></div>
+						<?php } else { ?>
+							<div class="percen color-red"><?php echo $moneyMOld != 0 ? (1 - round($moneyM/$moneyMOld,2))*100 : 100; ?>% <i class="glyphicon glyphicon-arrow-down"></i></div>
+						<?php } ?>
+					</div>
+				<div>
+
+				
+			</div>
+			
 		</div><!--/.row-->
+		<div class="col-xs-12" id="info-box" style="margin-top: 50px">
+			<figure class="highcharts-figure">
+				<div id="container"></div>
+			</figure>
+		</div>
+
+		<?php
+			$sql = "SELECT * from `order` od LEFT JOIN order_mapping om ON om.order_id = od.id LEFT JOIN product pd on pd.prd_id = om.product_id LEFT JOIN category c on c.cat_id = pd.cat_id where od.created_at >= '$start_date' and od.created_at <= '$end_date' and od.status != 3";
+			$query = mysqli_query($conn,$sql);
+			$listCat = [];
+			while($row = mysqli_fetch_array($query)){
+				if(isset($row['cat_name'])) {
+					if(isset($listCat[$row['cat_name']])) {
+						$listCat[$row['cat_name']] += $row['total_price_map'];
+					} else {
+						$listCat[$row['cat_name']] = $row['total_price_map'];
+					}
+				}
+				
+			}
+		?>
+		<div class="col-xs-12" id="info-box" style="margin-top: 50px">
+			<figure class="highcharts-figure">
+				<div id="container1"></div>
+			</figure>
+		</div>
 	</div>	<!--/.main-->
+	<script src="js/highcharts.js"></script>
+<script src="js/exporting.js"></script>
+<script src="js/export-data.js"></script>
+<script src="js/accessibility.js"></script>
+
+
+<script>
+// Data retrieved from https://gs.statcounter.com/browser-market-share#monthly-202201-202201-bar
+
+Highcharts.chart('container', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Thống kê doanh thu hàng tháng'
+    },
+    xAxis: {
+        categories: [
+			<?php for($i = 0; $i < (int)date("m");$i++) { echo '\'Tháng'.($i+1).'\','; } ?>
+        ],
+        crosshair: true
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'VND'
+        }
+    },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.0f} VND</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        }
+    },
+    series: [{
+        name: 'Doanh thu',
+        data: [<?php for($i = 0; $i < (int)date("m");$i++) { echo $listMonth[$i].','; } ?>]
+
+    }],
+	colors: ['#30a5ff']
+});
+
+
+Highcharts.chart('container1', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Thống kê doanh thu theo danh mục'
+    },
+    xAxis: {
+        categories: [
+			<?php 
+				foreach($listCat as $key => $value) {
+					echo '\''.$key.'\',';
+				}
+			?>
+        ],
+        crosshair: true
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'VND'
+        }
+    },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.0f} VND</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        }
+    },
+    series: [{
+        name: 'Doanh thu',
+        data: [<?php 
+				foreach($listCat as $key => $value) {
+					echo $value.',';
+				}
+			?>]
+
+    }],
+	colors: ['#1ebfae']
+});
+</script>

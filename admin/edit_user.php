@@ -63,9 +63,9 @@
 							<div class="form-group">
 								<label>Quyền</label>
 								<select name="user_level" class="form-control">
-									<option <?php if($row['user_level'] == 1) {echo 'selected';} ?> value=1>Quản lý hệ thống</option>
-									<option <?php if($row['user_level'] == 2) {echo 'selected';} ?> value=2 selected>Quản trị viên</option>
-									<option <?php if($row['user_level'] == 3) {echo 'selected';} ?> value=3 selected>Kế toán</option>
+									<option <?php if($row['user_level'] == '1') {echo 'selected';} ?> value=1>Quản lý hệ thống</option>
+									<option <?php if($row['user_level'] == '2') {echo 'selected';} ?> value=2 >Quản trị viên</option>
+									<option <?php if($row['user_level'] == '3') {echo 'selected';} ?> value=3 >Kế toán</option>
 								</select>
 							</div>
 							<button type="submit" name="sbm" class="btn btn-primary">Cập nhật</button>

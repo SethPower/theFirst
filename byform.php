@@ -18,7 +18,6 @@
 		$sql = "SELECT * FROM order WHERE id = (SELECT max(id) FROM order WHERE deleted_at is null)";
 		$resultOrder = $conn -> query($sql);
 		$dataOrder = $resultOrder->fetch_all(MYSQLI_ASSOC);
-		var_dump($dataOrder);
 		// header("location: index.php?page_layout=login&isRegist=true");
     }
 

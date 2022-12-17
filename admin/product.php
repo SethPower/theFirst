@@ -112,7 +112,7 @@
                             </thead>
                             <tbody>
                                 <?php 
-                                    $sql = "SELECT * FROM product INNER JOIN category on product.cat_id = category.cat_id LEFT JOIN sale on sale.product_id = product.prd_id ORDER BY prd_id DESC LIMIT ".$per_row.' , '.$row_per_page;
+                                    $sql = "SELECT * FROM product INNER JOIN category on product.cat_id = category.cat_id LEFT JOIN sale on sale.product_id = product.prd_id and sale.start_date <= now() and sale.end_date >= now() ORDER BY prd_id DESC LIMIT ".$per_row.' , '.$row_per_page;
                                     $query = mysqli_query($conn,$sql);
                                     while($row = mysqli_fetch_array($query)){
                                 ?>  

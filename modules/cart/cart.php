@@ -14,24 +14,37 @@
     use PHPMailer\PHPMailer\PHPMailer;
     use PHPMailer\PHPMailer\Exception;	
     
+    if(isset($_POST['update-cart'])){
+        $arr_id = array();
+        foreach($_SESSION["cart"] as $prd_id => $qtt){
+            if(isset( $_POST['qtt_'.$prd_id]))
+                $_SESSION['cart'][$prd_id] = $_POST['qtt_'.$prd_id];
+        }
+    }
+
+
     if(isset($_SESSION["cart"])){
         $arr_id = array();
         foreach($_SESSION["cart"] as $prd_id => $qtt){
-            $arr_id[] = $prd_id;
+            if(isset($prd_id) && $prd_id != '') {
+                $arr_id[] = $prd_id;
+            }
+                
         }
         $str_id = implode(", ", $arr_id);
-        $sql = "SELECT * FROM product WHERE prd_id IN ($str_id)";
+        $sql = "SELECT * FROM product LEFT JOIN sale ON sale.product_id = product.prd_id and sale.start_date <= now() and sale.end_date >= now() WHERE prd_id IN ($str_id)";
         $query = mysqli_query($conn,$sql);
         if(isset($_POST['byform'])){
             $name_order = $_POST['name'];
             $email_order = $_POST['mail'];
             $address_order = $_POST['add'];
             $phone_order = $_POST['phone'];
+            $totalPriceAll = $_POST['total_price_all'];
     
-            $sql = "INSERT INTO `order`(`name`, `email`, `address`, `phone`) VALUES ('$name_order','$email_order','$address_order','$phone_order')";
+            $sql = "INSERT INTO `order`(`name`, `email`, `address`, `phone`, `total_price`) VALUES ('$name_order','$email_order','$address_order','$phone_order','$totalPriceAll')";
             mysqli_query($conn,$sql);
             
-            $sql = "SELECT * FROM `order` WHERE id = (SELECT max(id) FROM `order` WHERE deleted_at is null) LIMIT 1";
+            $sql = "SELECT * FROM `order` WHERE id = (SELECT max(id) FROM `order`) LIMIT 1";
             $resultOrder = $conn -> query($sql);
             $dataOrder = $resultOrder->fetch_all(MYSQLI_ASSOC);
             $idOrder = $dataOrder[0]["id"];
@@ -45,8 +58,9 @@
 
             while($row = mysqli_fetch_array($query)){
                 $prd_id = $row[0];
-                $qtt = $_POST['qtt_'.$row['prd_id']];
-                $sqlOrderMapping = "INSERT INTO `order_mapping`(`order_id`, `product_id`, `number_product`) VALUES ('$idOrder','$prd_id','$qtt')";
+                $qtt = $_SESSION['cart'][$prd_id];
+                $total = $_POST['total_'.$prd_id];
+                $sqlOrderMapping = "INSERT INTO `order_mapping`(`order_id`, `product_id`, `number_product`, `total_price_map`) VALUES ('$idOrder','$prd_id','$qtt','$total')";
                 mysqli_query($conn,$sqlOrderMapping);
                 
             }
@@ -58,19 +72,21 @@
        if(isset($query)) {
 ?>
 <!--	Cart	-->
-<form id="buyNow" method="post">
+
 <div id="my-cart">
     <div class="row">
         <div class="cart-nav-item col-lg-7 col-md-7 col-sm-12">Thông tin sản phẩm</div>
         <div class="cart-nav-item col-lg-2 col-md-2 col-sm-12">Tùy chọn</div>
         <div class="cart-nav-item col-lg-3 col-md-3 col-sm-12">Giá</div>
     </div>
-   
+        <form method="post">
         <?php 
         $total_price_all = 0;
+        $listTotal = [];
+        $count = 0;
         if(isset($query)) {
         while($row = mysqli_fetch_array($query)){
-            $total_price = $_SESSION['cart'][$row['prd_id']] * $row['prd_price'];
+            $total_price = $_SESSION['cart'][$row['prd_id']] * (isset($row['sale_price']) ? $row['sale_price'] : $row['prd_price']);
             $total_price_all += $total_price;
         ?>
             <div class="cart-item row">
@@ -82,21 +98,24 @@
                     <input type="number" name="qtt_<?php echo $row['prd_id'] ?>" id="quantity" class="form-control form-blue quantity" value="<?php echo $_SESSION['cart'][$row['prd_id']]; ?>" min="1">
                 </div>
                 <div class="cart-price col-lg-3 col-md-3 col-sm-12"><b><?php echo number_format($total_price) ; ?>đ</b><a href="modules/cart/cart_del.php?prd_id=<?php echo $row['prd_id']; ?>">Xóa</a></div>
+                
             </div>
-        <?php        
+        <?php    
+                $listTotal[$count] = '<input type="hidden" name="total_'.$row['prd_id'].'" value="'.$total_price.'" />';
             }}
         ?>
 
         <div class="row">
             <div class="cart-thumb col-lg-7 col-md-7 col-sm-12">
-                <button id="update-cart" class="btn btn-success" type="submit" name="sbm">Cập nhật giỏ hàng</button>
+                <button id="update-cart" class="btn btn-success" type="submit" name="update-cart">Cập nhật giỏ hàng</button>
             </div>
             <div class="cart-total col-lg-2 col-md-2 col-sm-12"><b>Tổng cộng:</b></div>
             <div class="cart-price col-lg-3 col-md-3 col-sm-12"><b><?php echo number_format($total_price_all); ?>đ</b></div>
         </div>
-   
+        </form>
 
 </div>
+
 <!--	End Cart	-->
 <?php
     if(isset($_POST['name']) && isset($_POST['phone']) && isset($_POST['mail']) && isset($_POST['add'])){
@@ -181,6 +200,13 @@
     }
 ?>
 <!--	Customer Info	-->
+<form id="buyNow" method="post">
+<?php
+    foreach($listTotal as $row){
+        echo $row ;
+    ?>
+    <?php }?>
+<input type="hidden" name="total_price_all" value="<?php echo $total_price_all ?>" />
 <div id="customer">
     
         <div class="row">
@@ -206,7 +232,7 @@
                 </button>
             </div>
             <div class="by-now col-lg-6 col-md-6 col-sm-12">
-                <a href="#">
+                <a href="tel:+84326432343">
                     <b>Trả góp Online</b>
                     <span>Vui lòng call (+84) 0326432343</span>
                 </a>

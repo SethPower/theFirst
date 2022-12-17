@@ -135,6 +135,10 @@ body {
   margin: 0 0 10px;
 }
 
+.product-item h4 {
+  min-height: 40px;
+}
+
 .product-item img {
   width: 130px;
   height: 180px;

@@ -49,7 +49,7 @@
     <h3><?php echo $row['cat_name']; ?> (hiện có <?php echo $count = mysqli_num_rows(mysqli_query($conn,"SELECT * FROM product WHERE cat_id = $cat_id"));?> sản phẩm)</h3>
     <div class="product-list row">
         <?php
-            $sql_prd = "SELECT * FROM product WHERE cat_id = $cat_id ORDER BY prd_id DESC LIMIT 9";
+            $sql_prd = "SELECT * FROM product LEFT JOIN sale on sale.product_id = product.prd_id WHERE cat_id = $cat_id ORDER BY prd_id DESC LIMIT 9";
             $query_prd = mysqli_query($conn,$sql_prd);
             while($row_prd = mysqli_fetch_array($query_prd)){
         ?>
@@ -57,7 +57,13 @@
                 <div class="product-item card text-center">
                 <a href="index.php?page_layout=product&&prd_id=<?php echo $row_prd['prd_id']; ?>"><img src="admin/img/products/<?php echo $row_prd['prd_image']; ?>"></a>
                 <h4><a href="index.php?page_layout=product&&prd_id=<?php echo $row_prd['prd_id']; ?>"><?php echo $row_prd['prd_name']; ?></a></h4>
-                <p>Giá Bán: <span><?php echo number_format($row_prd['prd_price']); ?>₫</span></p>
+                <?php if(isset($row_prd['sale_price'])) { ?>
+                <p class="decoration">Giá Bán: <span><?php echo $row_prd['prd_price']; ?>đ</span></p>
+                <p>Giá khuyến mãi: <span><?php echo number_format($row_prd['sale_price']); ?>₫</span></p>
+                <span class="label label-danger"><?php echo (((1 -round((int)$row_prd['sale_price']/(int)$row_prd['prd_price'],2)))*100).'%'; ?></span>
+                <?php } else { ?>
+                    <p>Giá Bán: <span><?php echo $row_prd['prd_price']; ?>đ</span></p>
+                <?php } ?>
             </div>
         </div>
         <?php        

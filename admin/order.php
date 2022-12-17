@@ -5,15 +5,12 @@
         if($_POST['order_submit'] == "cancel") {
             $reason = $_POST['reason'];
             $sql = "UPDATE `order` SET `status`='3',`reason`='$reason' WHERE `id` = '$idAct'";
-            var_dump($sql);
             mysqli_query($conn,$sql);
         } else if($_POST['order_submit'] == "change") {
             $sql = "UPDATE `order` SET `status`='2' WHERE `id` = '$idAct'";
-            var_dump($sql);
             mysqli_query($conn,$sql);
         } else if($_POST['order_submit'] == "success") {
             $sql = "UPDATE `order` SET `status`='0' WHERE `id` = '$idAct'";
-            var_dump($sql);
             mysqli_query($conn,$sql);
         }
         
@@ -108,14 +105,13 @@
                                     $rowMap = $result->fetch_all(MYSQLI_ASSOC);
                                    
                                     $rowspan = count($rowMap);
-                                    //  var_dump($rowspan);
-                                    $total_price_all = 0;
+                                    // $total_price_all = 0;
                                     $idx = 0;
+                                    //     foreach($rowMap as $itemMap) {
+                                    //         $total_price_all += $itemMap['number_product']*$itemMap['prd_price'];
+                                    //     }
                                         foreach($rowMap as $itemMap) {
-                                            $total_price_all += $itemMap['number_product']*$itemMap['prd_price'];
-                                        }
-                                        foreach($rowMap as $itemMap) {
-                            ?>
+                                    ?>
                                     <tr>
                                         <?php if($idx == 0) { ?>
                                         <td rowspan="<?php echo $rowspan; ?>" style=""><?php echo $row['id']; ?></td>
@@ -129,7 +125,7 @@
                                             <td style=""><?php echo $itemMap['prd_price']; ?></td>
                                         
                                         <?php if($idx == 0) { ?>
-                                        <td rowspan=<?php echo $rowspan; ?> style=""><?php echo $total_price_all; ?></td>
+                                        <td rowspan=<?php echo $rowspan; ?> style=""><?php echo $row['total_price']; ?></td>
                                         <td rowspan=<?php echo $rowspan; ?> style="">
                                             <?php 
                                                 switch($row['status']) {
@@ -158,7 +154,7 @@
                                             <?php if($row['status'] == 2 && ($role == '1' || $role == '3')) { ?>
                                                 <a title="Hoàn thành" onclick="onSubmit('success',<?php echo $row['id']; ?>)" class="btn btn-primary"><i class="glyphicon glyphicon-ok"></i></a>
                                             <?php } ?>
-                                                <a onclick="openModalReason(<?php echo $row['id']; ?>,<?php echo $row['status']; ?>)" title="Hủy đơn" href="del_user.php?user_id=<?php echo $row['user_id']; ?>" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i></a>
+                                                <a onclick="openModalReason(<?php echo $row['id']; ?>,<?php echo $row['status']; ?>)" title="Hủy đơn" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i></a>
                                                 <input type="hidden" name="reason_<?php echo $row['id']; ?>" id="reason_<?php echo $row['id']; ?>" value="<?php echo $row['reason']; ?>" />
                                         <?php } ?>
                                         </td>

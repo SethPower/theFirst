@@ -57,8 +57,8 @@
 	
 			if(count($row) > 0){
 				$_SESSION['user_name'] = $row[0]['customer_full'];
+				$_SESSION['user_mail'] = $row[0]['customer_mail'];
 				$_SESSION['pass'] = $pass;
-				var_dump($row[0]);
 				header("location: index.php");
 			}
 			else{

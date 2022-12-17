@@ -72,14 +72,14 @@
                                         <label>Phụ kiện</label>
                                         <input type="text" name="prd_accessories" required value="<?php echo $row['prd_accessories']; ?>" class="form-control">
                                     </div>                  
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <label>Khuyến mãi</label>
                                         <input type="text" name="prd_promotion" required value="<?php echo $row['prd_new']; ?>" class="form-control">
-                                    </div>  
-                                    <div class="form-group">
+                                    </div>   -->
+                                    <!-- <div class="form-group">
                                         <label>Tình trạng</label>
                                         <input type="text" name="prd_new" required value="<?php echo $row['prd_promotion']; ?>" type="text" class="form-control">
-                                    </div>  
+                                    </div>   -->
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">

@@ -92,14 +92,14 @@ if(isset($_POST['sbm'])){
                                 <label>Phụ kiện</label>
                                 <input required name="prd_accessories" type="text" class="form-control">
                             </div>                  
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label>Khuyến mãi</label>
                                 <input required name="prd_promotion" type="text" class="form-control">
-                            </div>  
-                            <div class="form-group">
+                            </div>   -->
+                            <!-- <div class="form-group">
                                 <label>Tình trạng</label>
                                 <input required name="prd_new" type="text" class="form-control">
-                            </div>
+                            </div> -->
                         </div>
 
                         <div class="col-md-6">

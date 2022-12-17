@@ -27,13 +27,11 @@
     </a>
         <ul id="ul-login" style="float: left;">
             <?php if(isset($_SESSION['user_name'])) { ?>
-                <li style="float: left;">
-                    <a href="index.php?page_layout=login">
+                <li style="float: left;color: #fff">
                         <svg style="height: 30px; width: 30px;" class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg>
                         <?php 
                             echo $_SESSION['user_name'];
                         ?>
-                    </a>
                 </li>
                 <li style="float: left;"><a href="index.php?page_layout=logout"><svg style="height: 30px; width: 30px;" class="glyph stroked cancel"><use xlink:href="#stroked-cancel"></use></svg> Đăng xuất</a></li>
             <?php } else { ?>
