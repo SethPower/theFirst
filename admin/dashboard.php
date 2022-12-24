@@ -75,7 +75,6 @@
 				// $end_date = date("Y-m-d",time()).' 23:59:59'; 
 			
 				$sql = "SELECT * from `order` od LEFT JOIN order_mapping om ON om.order_id = od.id LEFT JOIN product pd ON pd.prd_id = om.product_id where created_at >= '$start_date' and created_at <= '$end_date' and status != 3";
-				var_dump($sql);
 				$query = mysqli_query($conn,$sql);
 				$moneyDay = 0;
 				$moneyDayOld = 0;
@@ -90,7 +89,10 @@
 				$moneyWOld1 = 0;
 				$moneyM1 = 0;
 				$moneyMOld1 = 0;
+
 				$listMonth = [0,0,0,0,0,0,0,0,0,0,0,0];
+
+				$listMonth1 = [0,0,0,0,0,0,0,0,0,0,0,0];
 				while($row = mysqli_fetch_array($query)){
 					if(strtotime($row['created_at']) >= strtotime(date("Y-m-d",time()).' 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y-m-d",time()).' 23:59:59')) {
 						$moneyDay += (int) $row['total_price_map'];
@@ -123,44 +125,78 @@
 						$moneyMOld += (int) $row['total_price_map'];
 						$moneyMOld1 += ((int) $row['total_price_map'] - (((int) $row['number_product'])*((int) $row['prd_original_price']) ));
 					}
-						
+
 
 					//Tháng 1
-					if(strtotime($row['created_at']) >= strtotime(date("Y").'-01-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-01-31 23:59:59'))
+					if(strtotime($row['created_at']) >= strtotime(date("Y").'-01-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-01-31 23:59:59')) {
 						$listMonth[0] += (int) $row['total_price_map'];
+						$listMonth1[0] += ((int) $row['total_price_map'] - (((int) $row['number_product'])*((int) $row['prd_original_price']) ));
+					}
+						
 					//Tháng 2
-					if(strtotime($row['created_at']) >= strtotime(date("Y").'-02-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-02-31 23:59:59'))
+					if(strtotime($row['created_at']) >= strtotime(date("Y").'-02-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-02-31 23:59:59')) {
 						$listMonth[1] += (int) $row['total_price_map'];	
+						$listMonth1[1] += ((int) $row['total_price_map'] - (((int) $row['number_product'])*((int) $row['prd_original_price']) ));
+					}
+						
 					//Tháng 3
-					if(strtotime($row['created_at']) >= strtotime(date("Y").'-03-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-03-31 23:59:59'))
+					if(strtotime($row['created_at']) >= strtotime(date("Y").'-03-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-03-31 23:59:59')) {
 						$listMonth[2] += (int) $row['total_price_map'];	
+						$listMonth1[2] += ((int) $row['total_price_map'] - (((int) $row['number_product'])*((int) $row['prd_original_price']) ));
+					}
+						
 					//Tháng 4
-					if(strtotime($row['created_at']) >= strtotime(date("Y").'-04-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-04-31 23:59:59'))
+					if(strtotime($row['created_at']) >= strtotime(date("Y").'-04-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-04-31 23:59:59')) {
 						$listMonth[3] += (int) $row['total_price_map'];	
+						$listMonth1[3] += ((int) $row['total_price_map'] - (((int) $row['number_product'])*((int) $row['prd_original_price']) ));
+					}
 					//Tháng 5
-					if(strtotime($row['created_at']) >= strtotime(date("Y").'-05-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-05-31 23:59:59'))
+					if(strtotime($row['created_at']) >= strtotime(date("Y").'-05-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-05-31 23:59:59')) {
 						$listMonth[4] += (int) $row['total_price_map'];	
+						$listMonth1[4] += ((int) $row['total_price_map'] - (((int) $row['number_product'])*((int) $row['prd_original_price']) ));
+					}
+						
 					//Tháng 6
-					if(strtotime($row['created_at']) >= strtotime(date("Y").'-06-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-06-31 23:59:59'))
+					if(strtotime($row['created_at']) >= strtotime(date("Y").'-06-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-06-31 23:59:59')) {
 						$listMonth[5] += (int) $row['total_price_map'];	
+						$listMonth1[5] += ((int) $row['total_price_map'] - (((int) $row['number_product'])*((int) $row['prd_original_price']) ));
+					}
+						
 					//Tháng 7
-					if(strtotime($row['created_at']) >= strtotime(date("Y").'-07-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-07-31 23:59:59'))
+					if(strtotime($row['created_at']) >= strtotime(date("Y").'-07-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-07-31 23:59:59')) {
 						$listMonth[6] += (int) $row['total_price_map'];	
+						$listMonth1[6] += ((int) $row['total_price_map'] - (((int) $row['number_product'])*((int) $row['prd_original_price']) ));
+					}
 					//Tháng 8
-					if(strtotime($row['created_at']) >= strtotime(date("Y").'-08-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-08-31 23:59:59'))
+					if(strtotime($row['created_at']) >= strtotime(date("Y").'-08-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-08-31 23:59:59')) {
 						$listMonth[7] += (int) $row['total_price_map'];	
+						$listMonth1[7] += ((int) $row['total_price_map'] - (((int) $row['number_product'])*((int) $row['prd_original_price']) ));
+					}
+						
 					//Tháng 9
-					if(strtotime($row['created_at']) >= strtotime(date("Y").'-09-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-09-31 23:59:59'))
+					if(strtotime($row['created_at']) >= strtotime(date("Y").'-09-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-09-31 23:59:59')) {
 						$listMonth[8] += (int) $row['total_price_map'];	
+						$listMonth1[8] += ((int) $row['total_price_map'] - (((int) $row['number_product'])*((int) $row['prd_original_price']) ));
+					}
+						
 					//Tháng 10
-					if(strtotime($row['created_at']) >= strtotime(date("Y").'-10-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-10-31 23:59:59'))
+					if(strtotime($row['created_at']) >= strtotime(date("Y").'-10-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-10-31 23:59:59')) {
 						$listMonth[9] += (int) $row['total_price_map'];	
+						$listMonth1[9] += ((int) $row['total_price_map'] - (((int) $row['number_product'])*((int) $row['prd_original_price']) ));
+					}
+						
 					//Tháng 11
-					if(strtotime($row['created_at']) >= strtotime(date("Y").'-11-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-11-31 23:59:59'))
+					if(strtotime($row['created_at']) >= strtotime(date("Y").'-11-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-11-31 23:59:59')) {
 						$listMonth[10] += (int) $row['total_price_map'];
+						$listMonth1[10] += ((int) $row['total_price_map'] - (((int) $row['number_product'])*((int) $row['prd_original_price']) ));
+					}
+						
 					//Tháng 12
-					if(strtotime($row['created_at']) >= strtotime(date("Y").'-12-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-12-31 23:59:59'))
+					if(strtotime($row['created_at']) >= strtotime(date("Y").'-12-01 00:00:00') && strtotime($row['created_at']) <= strtotime(date("Y").'-12-31 23:59:59')) {
 						$listMonth[11] += (int) $row['total_price_map'];	
+						$listMonth1[11] += ((int) $row['total_price_map'] - (((int) $row['number_product'])*((int) $row['prd_original_price']) ));
+					}
+						
 
 				}
 
@@ -246,12 +282,15 @@
 			$sql = "SELECT * from `order` od LEFT JOIN order_mapping om ON om.order_id = od.id LEFT JOIN product pd on pd.prd_id = om.product_id LEFT JOIN category c on c.cat_id = pd.cat_id where od.created_at >= '$start_date' and od.created_at <= '$end_date' and od.status != 3";
 			$query = mysqli_query($conn,$sql);
 			$listCat = [];
+			$listCat1 = [];
 			while($row = mysqli_fetch_array($query)){
 				if(isset($row['cat_name'])) {
 					if(isset($listCat[$row['cat_name']])) {
 						$listCat[$row['cat_name']] += $row['total_price_map'];
+						$listCat1[$row['cat_name']] += ((int) $row['total_price_map'] - (((int) $row['number_product'])*((int) $row['prd_original_price']) ));
 					} else {
 						$listCat[$row['cat_name']] = $row['total_price_map'];
+						$listCat1[$row['cat_name']] = ((int) $row['total_price_map'] - (((int) $row['number_product'])*((int) $row['prd_original_price']) ));
 					}
 				}
 				
@@ -305,12 +344,19 @@ Highcharts.chart('container', {
             borderWidth: 0
         }
     },
-    series: [{
-        name: 'Doanh thu',
-        data: [<?php for($i = 0; $i < (int)date("m");$i++) { echo $listMonth[$i].','; } ?>]
+    series: [
+		{
+			name: 'Doanh thu',
+			data: [<?php for($i = 0; $i < (int)date("m");$i++) { echo $listMonth[$i].','; } ?>]
 
-    }],
-	colors: ['#30a5ff']
+		},
+		{
+			name: 'Lãi',
+			data: [<?php for($i = 0; $i < (int)date("m");$i++) { echo $listMonth1[$i].','; } ?>]
+
+		},
+	],
+	colors: ['#30a5ff','#f9243f']
 });
 
 
@@ -351,15 +397,24 @@ Highcharts.chart('container1', {
             borderWidth: 0
         }
     },
-    series: [{
-        name: 'Doanh thu',
-        data: [<?php 
-				foreach($listCat as $key => $value) {
-					echo $value.',';
-				}
-			?>]
-
-    }],
-	colors: ['#1ebfae']
+    series: [
+		{
+			name: 'Doanh thu',
+			data: [<?php 
+					foreach($listCat as $key => $value) {
+						echo $value.',';
+					}
+				?>]
+		},
+		{
+			name: 'Lãi',
+			data: [<?php 
+					foreach($listCat1 as $key => $value) {
+						echo $value.',';
+					}
+				?>]
+		}
+],
+	colors: ['#1ebfae','#f9243f']
 });
 </script>
