@@ -110,6 +110,7 @@
 				case "add_customer": include_once('add_customer.php');break;
 				case "edit_customer": include_once('edit_customer.php');break;
 				case "order": include_once('order.php');break;
+				case "product_top": include_once('product_top.php');break;
 			}
 		}else{
 			include_once('dashboard.php');

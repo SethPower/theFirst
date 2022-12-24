@@ -41,7 +41,7 @@
 ?>
 <!--	List Product	-->
 <div class="products">
-    <h3> Sản phẩm khuyến mãi (hiện có <?php echo $count = mysqli_num_rows(mysqli_query($conn,"SELECT * FROM sale INNER JOIN product on sale.product_id = product.prd_id WHERE `start_date`<= now() and  `end_date` >= now()"));?> sản phẩm)</h3>
+    <h3> Sản phẩm khuyến mãi (hiện có <?php echo $count = mysqli_num_rows(mysqli_query($conn,"SELECT * FROM sale INNER JOIN product on sale.product_id = product.prd_id and sale.start_date <= now() and sale.end_date >= now() WHERE `start_date`<= now() and  `end_date` >= now()"));?> sản phẩm)</h3>
     <div class="product-list row">
         <?php
             $sql_prd = "SELECT * FROM sale INNER JOIN product on sale.product_id = product.prd_id WHERE `start_date`<= now() and  `end_date` >= now() ORDER BY product.prd_id DESC LIMIT 9";

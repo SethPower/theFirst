@@ -10,7 +10,7 @@
         $startDateArr = explode("/", $_POST['start_date']);
         $start_date = date($startDateArr[2].'-'.$startDateArr[1].'-'.$startDateArr[0].' 00:00:00');
         $endDateArr = explode("/", $_POST['end_date']);
-        $end_date = date($endDateArr[2].'-'.$endDateArr[1].'-'.$endDateArr[0].' 23:59:59');
+        $end_date = date($endDateArr[2].'-'.$endDateArr[1].'-'.$endDateArr[0].' 00:00:00');
 
         $sql = "SELECT * from sale where product_id = '$product_id'";
         $result = $conn -> query($sql);
@@ -58,7 +58,7 @@
     if($page_prev <=0 ){
         $page_prev = 1;
     }
-    $list_page .= '<li class="page-item"><a class="page-link" href="index.php?page_layout=product&page='.$page_prev.'">&laquo;</a></li>';
+    $list_page .= '<li class="page-item"><a class="page-link" href="index.php?page_layout=product_top&page='.$page_prev.'">&laquo;</a></li>';
     //đánh dấu trang 
     for($i = 1; $i <= $total_page; $i++){
         if($i == $page){
@@ -66,14 +66,14 @@
         }else{
             $active = '';
         }
-        $list_page .= '<li class="page-item '.$active.'"><a class="page-link" href="index.php?page_layout=product&&page='.$i.'">'.$i.'</a></li>';
+        $list_page .= '<li class="page-item '.$active.'"><a class="page-link" href="index.php?page_layout=product_top&&page='.$i.'">'.$i.'</a></li>';
     }
     //nút next page
     $page_next = $page + 1;
     if($page_next > $total_page){
         $page_next = $total_page;
     }
-    $list_page .= '<li class="page-item"><a class="page-link" href="index.php?page_layout=product&page='.$page_next.'">&raquo;</a></li>';
+    $list_page .= '<li class="page-item"><a class="page-link" href="index.php?page_layout=product_top&page='.$page_next.'">&raquo;</a></li>';
 
 ?>
 
@@ -81,26 +81,16 @@
 		<div class="row">
 			<ol class="breadcrumb">
 				<li><a href="index.php"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg></a></li>
-				<li class="active">Danh sách sản phẩm</li>
+				<li class="active">Danh sách sản phẩm ít được mua nhất</li>
 			</ol>
 		</div><!--/.row-->
 		
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header">Danh sách sản phẩm</h1>
+				<h1 class="page-header">Danh sách sản phẩm ít được mua nhất</h1>
 			</div>
 		</div><!--/.row-->
-		<div id="toolbar" class="btn-group">
-            <div class="d-flex">
-                <a href="index.php?page_layout=add_product" class="btn btn-success" >
-                    <i class="glyphicon glyphicon-plus"></i> Thêm sản phẩm
-                </a>
-
-                <a href="index.php?page_layout=product_top" class="btn btn-primary">
-                    <i class="glyphicon glyphicon-plus"></i> Danh sách sản phẩm ít được mua nhất
-                </a>
-            </div>
-        </div>
+		
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="panel panel-default">
@@ -111,9 +101,10 @@
 
 						    <thead>
 						    <tr>
-						        <th data-field="id" data-sortable="true">ID</th>
-						        <th data-field="name"  data-sortable="true">Tên sản phẩm</th>
-                                <th data-field="price" data-sortable="true">Giá</th>
+						        <th>ID</th>
+						        <th>Tên sản phẩm</th>
+						        <th>Lượt mua</th>
+                                <th>Giá</th>
                                 <th>Ảnh sản phẩm</th>
                                 <th>Trạng thái</th>
                                 <th>Danh mục</th>
@@ -123,13 +114,18 @@
                             </thead>
                             <tbody>
                                 <?php 
-                                    $sql = "SELECT * FROM product INNER JOIN category on product.cat_id = category.cat_id LEFT JOIN sale on sale.product_id = product.prd_id and sale.start_date <= now() and sale.end_date >= now() ORDER BY prd_id DESC LIMIT ".$per_row.' , '.$row_per_page;
+                                    $sql = "SELECT *,sale.sale_price,c.cat_name, SUM(d.number_product) as total FROM (SELECT pd.prd_id,pd.prd_name, pd.prd_price,pd.prd_image, om.number_product, pd.prd_status,pd.cat_id FROM `product` pd LEFT JOIN order_mapping om ON om.product_id = pd.prd_id LEFT JOIN `order` od ON od.id = om.order_id AND od.status = 0 WHERE 1) d
+                                    LEFT JOIN sale ON sale.product_id = d.prd_id and sale.start_date <= now() and sale.end_date >= now()
+                                    LEFT JOIN category c ON c.cat_id = d.cat_id 
+                                    GROUP BY d.prd_image,d.prd_id,d.prd_price,d.prd_name,sale.sale_price,c.cat_name ORDER BY total ASC LIMIT ".$per_row.' , '.$row_per_page;
+
                                     $query = mysqli_query($conn,$sql);
                                     while($row = mysqli_fetch_array($query)){
                                 ?>  
                                     <tr>
                                         <td style=""><?php echo $row['prd_id'];?></td>
                                         <td style=""><?php echo $row['prd_name'];?></td>
+                                        <td style=""><?php echo isset($row['total'] ) ? $row['total'] : 0 ;?></td>
                                         <td style=""><?php echo $row['prd_price'];?> vnd</td>
                                         <td style="text-align: center"><img width="130" height="180" src="img/products/<?php echo $row['prd_image'];?>" /></td>
                                         <td>

@@ -1,8 +1,14 @@
 <div class="products">
-    <h3>Sản phẩm mới</h3>
+    <h3>Top sản phẩn bán chạy</h3>
     <div class="product-list row">
         <?php 
-            $sql = "SELECT * FROM product LEFT JOIN sale on sale.product_id = product.prd_id and sale.start_date <= now() and sale.end_date >= now() ORDER BY prd_id DESC LIMIT 6";
+            $sql = "SELECT pd.prd_image,pd.prd_id,pd.prd_price,pd.prd_name,sale.sale_price,SUM(om.number_product) as total FROM `product` pd
+            LEFT JOIN sale ON sale.product_id = pd.prd_id and sale.start_date <= now() and sale.end_date >= now()
+            LEFT JOIN order_mapping om ON om.product_id = pd.prd_id
+            LEFT JOIN `order` od ON od.id = om.order_id
+            WHERE od.status = 0
+            GROUP BY pd.prd_image,pd.prd_id,pd.prd_price,pd.prd_name,sale.sale_price
+            ORDER BY total DESC LIMIT 6";
             $query = mysqli_query($conn, $sql);
             while($row = mysqli_fetch_array($query)){
         ?>
@@ -17,6 +23,7 @@
                 <?php } else { ?>
                     <p>Giá Bán: <span><?php echo $row['prd_price']; ?>đ</span></p>
                 <?php } ?>
+                <p>Lượt bán: <span><?php echo $row['total']; ?> lượt</span></p>
             </div>
         </div>
         <?php        

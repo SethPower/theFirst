@@ -3,7 +3,7 @@
 <?php 
     if(isset($_GET['prd_id'])){
         $prd_id = $_GET['prd_id'];
-        $sql = "SELECT * FROM product LEFT JOIN sale on sale.product_id = product.prd_id WHERE product.prd_id = $prd_id";
+        $sql = "SELECT * FROM product LEFT JOIN sale on sale.product_id = product.prd_id and sale.start_date <= now() and sale.end_date >= now() WHERE product.prd_id = $prd_id";
         $query = mysqli_query($conn,$sql);
         $row = mysqli_fetch_array($query);
     }

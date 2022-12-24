@@ -5,7 +5,7 @@ $keyword = $_POST['keyword']; // aa bb cc
 $arr_key = explode(" ", $keyword); // => [aa] [bb] [cc]
 $new_key = "%".implode("%", $arr_key)."%"; // => %aa%bb%cc%
 
-$sql = "SELECT * FROM product LEFT JOIN sale on sale.product_id = product.prd_id WHERE prd_name LIKE '$new_key' LIMIT 9";
+$sql = "SELECT * FROM product LEFT JOIN sale on sale.product_id = product.prd_id and sale.start_date <= now() and sale.end_date >= now() WHERE prd_name LIKE '$new_key' LIMIT 9";
 $query = mysqli_query($conn,$sql);
 
 // PHÂN TRANG

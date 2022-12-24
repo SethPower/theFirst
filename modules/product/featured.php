@@ -2,7 +2,7 @@
     <h3>Sản phẩm nổi bật</h3>
     <div class="product-list row">
         <?php 
-            $sql = "SELECT * FROM product LEFT JOIN sale on sale.product_id = product.prd_id WHERE prd_featured = '1' ORDER BY prd_id DESC LIMIT 6";
+            $sql = "SELECT * FROM product LEFT JOIN sale on sale.product_id = product.prd_id and sale.start_date <= now() and sale.end_date >= now() WHERE prd_featured = '1' ORDER BY prd_id DESC LIMIT 6";
             $query = mysqli_query($conn, $sql);
             while($row = mysqli_fetch_array($query)){
         ?>

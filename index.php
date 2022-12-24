@@ -87,6 +87,7 @@
                             }
                         }else{
                             include_once('modules/product/featured.php');
+                            include_once('modules/product/topby.php');
                             include_once('modules/product/latest.php');
                         }
                     ?>

@@ -10,10 +10,11 @@
     if (isset($_POST['sbm'])){
         $prd_name = $_POST['prd_name'];
         $prd_price = $_POST['prd_price'];
+        $prd_original_price = $_POST['prd_original_price'];
         $prd_warranty = $_POST['prd_warranty'];
         $prd_accessories = $_POST['prd_accessories'];
-        $prd_promotion = $_POST['prd_promotion'];
-        $prd_new = $_POST['prd_new'];
+        // $prd_promotion = $_POST['prd_promotion'];
+        // $prd_new = $_POST['prd_new'];
         if($_FILES['prd_image']['name']==''){
             $prd_image = $row['prd_image'];
         }else{
@@ -29,7 +30,7 @@
             $prd_featured = 0;
         }
         $prd_details = $_POST['prd_details'];
-        $sql_update = "UPDATE product SET prd_name='$prd_name', prd_price='$prd_price', prd_warranty='$prd_warranty', prd_accessories='$prd_accessories', prd_promotion='$prd_promotion', prd_new='$prd_new', prd_image='$prd_image', cat_id=$cat_id, prd_status=$prd_status, prd_featured=$prd_featured WHERE prd_id=$prd_id";
+        $sql_update = "UPDATE product SET prd_name='$prd_name', prd_price='$prd_price', prd_warranty='$prd_warranty', prd_accessories='$prd_accessories', prd_image='$prd_image', cat_id=$cat_id, prd_status=$prd_status, prd_featured=$prd_featured, prd_original_price=$prd_original_price WHERE prd_id=$prd_id";
         mysqli_query($conn,$sql_update);
         header("location: index.php?page_layout=product");
     }
@@ -59,7 +60,11 @@
                                     <div class="form-group">
                                         <label>Tên sản phẩm</label>
                                         <input type="text" name="prd_name" required class="form-control" value="<?php echo $row['prd_name']; ?>"  placeholder="">
-                                    </div>                           
+                                    </div> 
+                                    <div class="form-group">
+                                        <label>Giá nhập</label>
+                                        <input required name="prd_original_price" type="text" class="form-control" value="<?php echo $row['prd_original_price']; ?>">
+                                    </div>                            
                                     <div class="form-group">
                                         <label>Giá sản phẩm</label>
                                         <input type="number" name="prd_price" required value="<?php echo $row['prd_price']; ?>" class="form-control">

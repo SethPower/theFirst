@@ -5,6 +5,7 @@ if(!defined('SECURITY')){
 if(isset($_POST['sbm'])){
     $prd_name = $_POST['prd_name'];
     $prd_price = $_POST['prd_price'];
+    $prd_original_price = $_POST['prd_original_price'];
     $prd_warranty = $_POST['prd_warranty'];
     $prd_accessories = $_POST['prd_accessories'];
     $prd_promotion = $_POST['prd_promotion'];
@@ -37,7 +38,7 @@ if(isset($_POST['sbm'])){
                 $prd_featured = 0;
             }
             $prd_details = $_POST['prd_details'];
-            $sql = "INSERT INTO product (prd_name, prd_price, prd_warranty, prd_accessories, prd_promotion, prd_new, prd_image, cat_id, prd_status, prd_featured, prd_details) VALUES ('$prd_name', $prd_price, '$prd_warranty', '$prd_accessories', '$prd_promotion', '$prd_new', '$prd_image', $cat_id, $prd_status, $prd_featured, '$prd_details')";
+            $sql = "INSERT INTO product (prd_name, prd_price, prd_warranty, prd_accessories, prd_promotion, prd_new, prd_image, cat_id, prd_status, prd_featured, prd_details,prd_original_price) VALUES ('$prd_name', $prd_price, '$prd_warranty', '$prd_accessories', '$prd_promotion', '$prd_new', '$prd_image', $cat_id, $prd_status, $prd_featured, '$prd_details','$prd_original_price')";
             $query = mysqli_query($conn,$sql);
             header("location: index.php?page_layout=product");
         }
@@ -79,7 +80,11 @@ if(isset($_POST['sbm'])){
                             <div class="form-group">
                                 <label>Tên sản phẩm</label>
                                 <input required name="prd_name" class="form-control" placeholder="">
-                            </div>                        
+                            </div>   
+                            <div class="form-group">
+                                <label>Giá nhập</label>
+                                <input required name="prd_original_price" type="text" class="form-control">
+                            </div>                       
                             <div class="form-group">
                                 <label>Giá sản phẩm</label>
                                 <input required name="prd_price" type="number" min="0" class="form-control">
