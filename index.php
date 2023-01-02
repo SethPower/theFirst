@@ -81,6 +81,7 @@
                                 case "product": include_once('modules/product/product.php'); break;
                                 case "category": include_once('modules/menu/category.php'); break;
                                 case "sale": include_once('modules/menu/sale.php'); break;
+                                case "top": include_once('modules/menu/top.php'); break;
                                 case "success": include_once('modules/cart/success.php'); break;
                                 case "search": include_once('modules/search/search.php'); break;
                                 case "new": include_once('modules/product/latest.php'); break;

@@ -1038,7 +1038,7 @@ fieldset[disabled] .form-control {
 }
 
 .info-box-item {
-	width: 300px;
+	width: 350px;
 	height: 120px;
 	background-color: #fff;
 	border-radius: 5px;
@@ -1086,4 +1086,8 @@ fieldset[disabled] .form-control {
 .info-box-content {
 	display: flex;
 	gap: 20px;
+}
+
+.navbar-header .navbar-brand {
+	padding: 0;
 }

@@ -10,7 +10,7 @@
         <a href="index.php?page_layout=new"><img class="img-fluid" src="images/index_banner_large_image___1.webp"></a>
     </div>
     <div class="banner-item">
-        <a href="#"><img class="img-fluid" src="images/index_banner_medium_1___2_image.webp"></a>
+        <a href="index.php?page_layout=top"><img class="img-fluid" src="images/banner_top.jpg"></a>
     </div>
     <div class="banner-item">
         <a href="#"><img class="img-fluid" src="images/index_banner_medium_1___1_image.webp"></a>

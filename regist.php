@@ -3,6 +3,7 @@
 	// 	die('Bạn không có quyền truy cập vào file này!');
 	// }
 	$isExit = false;
+	$isFormatEmail = false;
     if(isset($_POST['sbm'])){
         $user_full = $_POST['name'];
         $user_mail = $_POST['email'];
@@ -14,7 +15,9 @@
 		$rows = $result->fetch_all(MYSQLI_ASSOC);
 	
 		if(count($rows) == 0) {
-			if($user_pass===$user_re_pass){
+			if(strlen($user_mail) < 11 || substr($user_mail,strlen($user_mail)-10,strlen($user_mail)) != '@gmail.com') {
+                $isFormatEmail = true;
+            }else if($user_pass===$user_re_pass){
 				$sql = "INSERT INTO customer (customer_full, customer_mail, customer_pass) VALUES ('$user_full','$user_mail','$user_pass')";
 				$query = mysqli_query($conn,$sql);
 				header("location: index.php?page_layout=login&isRegist=true");
@@ -54,6 +57,9 @@
 								<div class="col-md-12">
 									<?php if($isExit) { ?>
 										<div class="alert alert-danger">Email đã tồn tại !</div>
+									<?php } ?>
+									<?php if($isFormatEmail) { ?>
+										<div class="alert alert-danger">Định dạng email không đúng !</div>
 									<?php } ?>
 									<form role="form" method="post">
 									<div class="form-group">

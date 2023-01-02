@@ -102,6 +102,7 @@
             </div>
         <?php    
                 $listTotal[$count] = '<input type="hidden" name="total_'.$row['prd_id'].'" value="'.$total_price.'" />';
+                $count++;
             }}
         ?>
 
