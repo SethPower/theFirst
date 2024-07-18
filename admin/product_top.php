@@ -10,7 +10,7 @@
         $startDateArr = explode("/", $_POST['start_date']);
         $start_date = date($startDateArr[2].'-'.$startDateArr[1].'-'.$startDateArr[0].' 00:00:00');
         $endDateArr = explode("/", $_POST['end_date']);
-        $end_date = date($endDateArr[2].'-'.$endDateArr[1].'-'.$endDateArr[0].' 00:00:00');
+        $end_date = date($endDateArr[2].'-'.$endDateArr[1].'-'.$endDateArr[0].' 23:59:59');
 
         $sql = "SELECT * from sale where product_id = '$product_id'";
         $result = $conn -> query($sql);

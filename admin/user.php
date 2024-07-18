@@ -1,5 +1,6 @@
 <?php 
     $user = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM user"));
+    $role = $_SESSION['role'];
     // if(!defined('SECURITY')){
     //     die('Bạn không thể truy cập vào trang này!');
     // }
@@ -51,7 +52,7 @@
             <h1 class="page-header">Danh sách thành viên</h1>
         </div>
     </div><!--/.row-->
-    <?php if($user['user_level'] != 3){ ?>
+    <?php if($role != '3'){ ?>
         <div id="toolbar" class="btn-group">
             <a href="index.php?page_layout=add_user" class="btn btn-success">
                 <i class="glyphicon glyphicon-plus"></i> Thêm thành viên
@@ -71,7 +72,7 @@
                             <th data-field="name"  data-sortable="true">Họ & Tên</th>
                             <th data-field="price" data-sortable="true">Email</th>
                             <th>Quyền</th>
-                            <?php if($user['user_level'] == 3){ ?>
+                            <?php if($role == '3'){ ?>
                                 <th>Hành động</th>
                             <?php } ?>
                             <th>Hành động</th>

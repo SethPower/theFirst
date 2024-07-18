@@ -1,4 +1,5 @@
 <?php
+	$isFormatEmail = false;
 	if(isset($_GET['customer_id'])){
 		$user_id = $_GET['customer_id'];
 		$sql = "SELECT * FROM customer WHERE customer_id = $user_id";
@@ -10,7 +11,9 @@
 		$user_mail = $_POST['user_mail'];
 		$user_pass = md5($_POST['user_pass']);
 		$user_re_pass = md5($_POST['user_re_pass']);
-		if($user_pass===$user_re_pass){
+		if(strlen($user_mail) < 11 || substr($user_mail,strlen($user_mail)-10,strlen($user_mail)) != '@gmail.com') {
+			$isFormatEmail = true;
+		} else if($user_pass===$user_re_pass){
 			$sql_user = "UPDATE customer SET customer_full = '$user_full', customer_mail = '$user_mail', customer_pass = '$user_pass' WHERE customer_id = $user_id";
 			$query_user = mysqli_query($conn,$sql_user);
 			header("location: index.php?page_layout=customer");
@@ -42,7 +45,10 @@
 					<div class="panel-body">
 						<div class="col-md-8">
 							<!-- <div class="alert alert-danger">Email đã tồn tại, Mật khẩu không khớp !</div> -->
-						<form role="form" method="post">
+							<?php if($isFormatEmail) { ?>
+								<div class="alert alert-danger">Định dạng email không đúng !</div>
+							<?php } ?>
+						<form role="form" method="post" onsubmit="return validate()">
 							<div class="form-group">
 								<label>Họ & Tên</label>
 								<input type="text" name="user_full" required class="form-control" value="<?php echo $row['customer_full']; ?>" placeholder="">
@@ -70,3 +76,12 @@
 		</div><!-- /.row -->
 	
 </div>	<!--/.main-->	
+<script>
+			function validate() {
+				if(document.getElementsByName('user_pass')[0].value.length < 8) {
+					alert('Mật khẩu phải lớn hơn 8 ký tự!');
+					return false
+				}
+				return true;
+			}
+	</script>

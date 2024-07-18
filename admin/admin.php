@@ -72,22 +72,25 @@
 		</form> -->
 		<ul class="nav menu">
 			
-			<li class="<?php if(!isset($_GET['page_layout'])){echo "active";} ?>"><a href="index.php"><svg class="glyph stroked dashboard-dial"><use xlink:href="#stroked-dashboard-dial"></use></svg> Trang chủ</a></li>
+		<li class="<?php if(!isset($_GET['page_layout'])){echo "active";} ?>"><a href="index.php"><svg class="glyph stroked dashboard-dial"><use xlink:href="#stroked-dashboard-dial"></use></svg> Trang chủ</a></li>
 			
 			<?php if($role == '1') { ?>
-				<li class="<?php if($_GET['page_layout'] == 'user' || $_GET['page_layout'] == 'add_user' || $_GET['page_layout'] == 'edit_user'){echo "active";} ?>"><a href="index.php?page_layout=user"><svg class="glyph stroked male user "><use xlink:href="#stroked-male-user"/></svg>Quản lý thành viên</a></li>
+				<li class="<?php if(isset($_GET['page_layout']) && ($_GET['page_layout'] == 'user' || $_GET['page_layout'] == 'add_user' ||
+				 $_GET['page_layout'] == 'edit_user')){echo "active";} ?>"><a href="index.php?page_layout=user">
+					<svg class="glyph stroked male user "><use xlink:href="#stroked-male-user"/></svg>Quản lý thành viên</a></li>
 			<?php } ?>
 			<?php if($role == '1' || $role == '2') { ?>
-				<li class="<?php if($_GET['page_layout'] == 'category' || $_GET['page_layout'] == 'add_category' || $_GET['page_layout'] == 'edit_category'){echo "active";} ?>"><a href="index.php?page_layout=category"><svg class="glyph stroked open folder"><use xlink:href="#stroked-open-folder"/></svg>Quản lý danh mục</a></li>
+				<li class="<?php if(isset($_GET['page_layout']) && ($_GET['page_layout'] == 'category' || $_GET['page_layout'] == 'add_category' || 
+				$_GET['page_layout'] == 'edit_category')){echo "active";} ?>"><a href="index.php?page_layout=category"><svg class="glyph stroked open folder"><use xlink:href="#stroked-open-folder"/></svg>Quản lý danh mục</a></li>
 			<?php } ?>
 			<?php if($role == '1' || $role == '2') { ?>
-				<li class="<?php if($_GET['page_layout'] == 'product' || $_GET['page_layout'] == 'add_product' ||$_GET['page_layout'] == 'edit_product' ){echo "active";} ?>"><a href="index.php?page_layout=product"><svg class="glyph stroked bag"><use xlink:href="#stroked-bag"></use></svg>Quản lý sản phẩm</a></li>		
+				<li class="<?php if(isset($_GET['page_layout']) && ($_GET['page_layout'] == 'product' || 
+				$_GET['page_layout'] == 'add_product' ||$_GET['page_layout'] == 'edit_product')){echo "active";} ?>"><a href="index.php?page_layout=product"><svg class="glyph stroked bag"><use xlink:href="#stroked-bag"></use></svg>Quản lý sản phẩm</a></li>		
 			<?php } ?>
-			<li class="<?php if($_GET['page_layout'] == 'order'){echo "active";} ?>"><a href="index.php?page_layout=order"><svg class="glyph stroked bag"><use xlink:href="#stroked-bag"></use></svg>Quản lý đơn hàng</a></li>		
-			<li class="<?php if($_GET['page_layout'] == 'customer' || $_GET['page_layout'] == 'add_customer' ||$_GET['page_layout'] == 'edit_customer' ){echo "active";} ?>"><a href="index.php?page_layout=customer"><svg class="glyph stroked bag"><use xlink:href="#stroked-bag"></use></svg>Quản lý khách hàng</a></li>
-			<!-- <li><a href="comment.html"><svg class="glyph stroked two messages"><use xlink:href="#stroked-two-messages"/></svg> Quản lý bình luận</a></li>
-			<li><a href="ads.html"><svg class="glyph stroked chain"><use xlink:href="#stroked-chain"/></svg> Quản lý quảng cáo</a></li>
-			<li><a href="setting.html"><svg class="glyph stroked gear"><use xlink:href="#stroked-gear"/></svg> Cấu hình</a></li> -->
+			<li class="<?php if(isset($_GET['page_layout']) && ($_GET['page_layout'] == 'order')){echo "active";} ?>"><a href="index.php?page_layout=order"><svg class="glyph stroked bag"><use xlink:href="#stroked-bag"></use></svg>Quản lý đơn hàng</a></li>		
+			<li class="<?php if(isset($_GET['page_layout']) && ($_GET['page_layout'] == 'customer' || 
+			$_GET['page_layout'] == 'add_customer' ||
+			$_GET['page_layout'] == 'edit_customer' )){echo "active";} ?>"><a href="index.php?page_layout=customer"><svg class="glyph stroked bag"><use xlink:href="#stroked-bag"></use></svg>Quản lý khách hàng</a></li>
 		</ul>
 
 	</div><!--/.sidebar-->

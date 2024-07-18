@@ -61,7 +61,7 @@
 									<?php if($isFormatEmail) { ?>
 										<div class="alert alert-danger">Định dạng email không đúng !</div>
 									<?php } ?>
-									<form role="form" method="post">
+									<form role="form" method="post" onsubmit="return validate()">
 									<div class="form-group">
 										<label>Họ & Tên</label>
 										<input name="name" required class="form-control" placeholder="">
@@ -90,3 +90,12 @@
             </div><!-- /.row -->
 		
 	</div>	<!--/.main-->	
+	<script>
+		function validate() {
+			if(document.getElementsByName('password')[0].value.length < 8) {
+				alert('Mật khẩu phải lớn hơn 8 ký tự!');
+				return false
+			}
+			return true;
+		}
+	</script>
